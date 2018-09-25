@@ -1,0 +1,463 @@
+\section{Analysis}
+\label{sec:opt}
+
+\subsection{Procedure}
+Single scenario execution of \textit{FloatingSE} and/or WISDEM is
+sufficient to explore some simple one-off or comparison analyses between
+a few runs.  However, executing the model within an optimization
+framework can give yield richer and more insightful analyses.  There are
+two layers of optimization-based analyses presented in this work:
+
+\begin{enumerate}
+\item Use \textit{FloatingSE} and WISDEM to design a spar,
+  semisubmersible, and TLP floating substructure for the same turbine
+  configuration;
+\item Conduct a sensitivity analysis around the optimized designs for
+  weight reduction at the top of the tower by parametrically changing
+  the mass of the nacelle and re-optimizing the substructure.
+\end{enumerate}
+
+\subsubsection{Substructure Design}
+The first step in the analysis procedure is the conceptual design of a
+spar, semisubmersible, and TLP floating substructure for the same
+turbine configuration.  Many studies in the literature focus on the
+optimization of a single substructure design.  By showcasing the design
+of all three classical substructure archetype, we demonstrate the ability
+of the tool to capture a broad tradespace.
+
+Through its various modules, WISDEM is fully capable of optimizing the
+entire turbine design, from the rotor through the drivetrain and down
+through the tower and substructure.  However, in an effort to focus on
+the capabilities of \textit{FloatingSE}, the turbine was held fixed to
+the DTU \unit[10]{MW} reference definition throughout the substructure
+design and sensitivity analysis.  The only exception being the
+deliberate modification of the nacelle mass for the sensitivity study.
+This isolated the design variables and constraints to be those
+associated with the substructure exclusively.
+
+\subsubsection{Sensitivity Studies}
+Following the successful conceptual design of the floating
+substructures, a sensitivity study was executed relating the mass at the top of the
+tower to the mass and cost of the substructure.  This was accomplished
+by parametrically changing the nacelle mass and re-optimizing the
+substructure designs.  Specifically, the nacelle mass was changed from
+its nominal value to the perturbations of, $[+10\%, -10\%, -25\%, -33\%,
+  -50\%]$.  For the sensitivity study, the re-optimization was done locally,
+using the previously optimized designs as a starting point, and not
+searching over the global tradespace.  Then, by
+comparing the baseline design to the re-optimized designs under the
+parameterized mass changes, the cost value of mass savings can be
+determined.  Meaning, given the quantified mass and cost removed from
+the substructure relative to the baseline design, the cost value of the
+mass savings in the nacelle can be quantified.  In this way, a systems
+framework can determine with the cost premium for the nacelle mass
+reduction can be recovered through savings as the change is propagated
+throughout the rest of the system.
+
+The parametric modification of the nacelle mass is not merely an
+academic exercise to tease out design sensitivities.  There are many
+examples of a new technology or innovation that offers a component mass
+reduction at a cost premium.  By parametrically changing the nacelle
+mass, the sensitivity study is capturing the implications of moving from a
+multi-stage geared drivetrain to a single-stage or direct-drive
+alternative, or from a permanent magnet generator to a superconducting
+generator.  In both of these examples, the overall mass of the nacelle
+would likely decrease, but the new technology would cost more to
+implement over the legacy system.  Conducting an honest cost-benefit
+tradeoff of this option requires the potential design changes be
+propagated through the rest of the system.  WISDEM is an appropriate
+framework for posing and answering this type of question.
+
+
+\subsubsection{Reference Turbine Selection}
+For all elements of the optimization studies, attention is given to the
+substructure and the performance of \textit{FloatingSE}.  A reference
+turbine design was needed as a starting point by which the conceptual
+design and sensitivity studies could build upon.  The Danish Technical
+University (DTU) \unit[10]{MW} reference design was chosen as the static
+turbine to be used throughout this analysis.  This selection was made
+because \unit[10]{MW} is commensurate with the most current offshore
+turbine designs being installed (with fixed-bottom supports) by
+developers.  Additionally, other research efforts, such as the LIFES50+
+program, have already designed floating substructures for this turbine.
+Using the same reference turbine allows for a direct comparison of the
+designs produced here with the other designs documented in the
+literature.  For a summary of the DTU \unit[10]{MW} reference turbine,
+see \citet{dtu10mw}.
+
+
+\subsubsection{Metocean Conditions}
+In addition to choosing a reference turbine, it was also necessary to
+choose the meteorological and oceanographic (metocean) conditions of the
+environment.  As mentioned in Section \ref{sec:theory},
+\textit{FloatingSE} only uses a single DLC, the maximum rotor thrust and
+metocean loading, for concept evaluation.  The metocean condition
+selected for this DLC is the same as that used in the IEA Wind Task 30
+OC3 effort \citep{OC3}, and summarized in Table \ref{tbl:metocean}.
+
+\begin{table}[htbp] \begin{center}
+    \caption{Metocean conditions used as the design point in the design
+      and sensitivity studies (adopted from \citet{OC3}).}
+    \label{tbl:metocean}
+          {\small
+            \begin{tabular}{ l l } \hline
+              \textbf{Parameter} & \textbf{Value} \\ \hline \hline
+              Wind reference speed & \unit[11]{$m/s$} \\
+              Wind reference height & \unit[119]{$m$} \\
+              Water depth & \unit[320]{$m$} \\
+              Significant wave height & \unit[10.8]{$m$} \\
+              Significant wave period & \unit[9.8]{$s$} \\ \hline
+            \end{tabular}
+          }
+\end{center} \end{table}
+
+
+\subsection{Methodology}
+In this project, optimization studies start with the formulation of
+a constrained, nonlinear single-objective optimization problem with
+mixed-integer design variables,
+\begin{equation}
+\begin{array}{ll}
+  \min & f\left(\mbf{x}\right)\\
+  \text{subject to} & \mbf{g}\left(\mbf{x}\right) \leq 0,\\
+  \text{and}& \mbf{x} \in \mbf{X} \\
+  \end{array}
+\end{equation}
+where,
+\begin{itemize}
+\item $\mbf{x}$ is a vector of $n$ \textit{design variables}, the variables that are adjusted in order to
+  find the optimal solution (see Table \ref{tbl:designvar});
+\item $f(\mbf{x})$ is the nonlinear \textit{objective function}, the
+  metric to be minimized by the optimization algorithm;
+\item $\mbf{g} (\mbf{x})$ is the vector of \textit{inequality constraints}, the
+  set of conditions that the solution must satisfy (see Table
+  \ref{tbl:constraints}).  There are no equality constraints;
+\item $\mbf{X}$ is the design variable \textit{bounds}, the bracket of
+  allowable design variable values.
+\end{itemize}
+
+Note that this problem statement imposes no requirements on the types of
+variables in $\mbf{x}$.  A mixed-integer solution is desired, where some
+design variables are continuous ($x \in \mbb{R}$) and others are
+discrete variables that can only take integer values ($x \in
+\mbb{Z}$).  An example of an integer design variable in this
+application is the number of offset columns or the number of mooring
+line connections.
+
+
+\subsubsection{Objectives}
+As described above, two objective functions are used in this analysis:
+\begin{itemize}
+\item \textbf{Substructure system mass:} The mass of components from the
+  freeboard point and below \textit{except} mooring and anchor system masses;
+\item \textbf{Substructure system cost:} The capital cost of components from the
+  freeboard point and below \textit{including} mooring and anchor system costs;
+\end{itemize}
+
+
+\subsubsection{Algorithms}
+Two derivative-free optimization algorithms were applied sequentially to
+the substructure design problem:
+\begin{enumerate}
+\item \textbf{Global design space search and optimization:} Native
+  implementation of the Non Sorting Genetic Algorithm (NSGA)-II genetic
+  algorithm \citep{nsga2} with some modifications for constraint and
+  integer design variable handling;
+\item \textbf{Local neighborhood design space optimization:} Native
+  implementation of the Nelder-Mead simplex algorithm \citep{neldermead}  with some
+  modifications for constraint handling.
+\end{enumerate}
+
+The global design space search was performed by a modified
+implementation of the popular NSGA-II \citep{nsga2} algorithm.  This algorithm is
+a non-dominating sorting genetic algorithm that solves non-convex and
+non-smooth single and multiobjective optimization problems. The
+algorithm attempts to perform global optimization, while enforcing
+constraints, using a tournament selection-based strategy where the best
+solutions are placed into a mating pool.  The local modifications of the
+NSGA-II algorithm include parallelization via multi-threading for faster
+execution, the use of penalties for constraint handling (described
+below), and the handling of integer-based design variables for a fully
+mixed-integer capable solution.  Specifically, a method for
+integer-coded design variable crossover and mutation, standard genetic
+algorithm operations, were developed.  Crossover of an integer design
+variable across two population members with integer values $z_1$ and
+$z_2$ is simply a random integer in the interval, $[z_1, z_2]$.
+Similarly, mutation of an integer design variable is a random integer
+number selected between the lower and upper bounds.
+
+The user selected parameters and initial conditions for the NSGA-II
+algorithm were selected to foster a broad and fluid search of the entire
+tradespace.  A population size of 30 was initialized with Latin
+Hypercube sampling across the range of permissible design variable
+values from the lower bound to the upper bound.  Thus, this was truly a
+\textit{tabula rasa} (blank slate) approach to substructure design.  The
+probability of crossover during the optimization was set to 0.9 and the
+probably of mutation was 0.4.  Both of these values are considered high,
+in the context of genetic algorithm scientific literature, but again
+enabled a broard and fluid search of the tradespace.
+
+By design, the NSGA-II algorithm is well-suited to global optimization
+by traversing a broad span and combination of design variable values.
+However, for single-objective optimization (such as mass or cost
+minimization), the crossover and mutation operations, with their
+inherent use of random numbers, are inefficient at searching a design
+space neighborhood for local minima.  Thus, after the genetic algorithm
+terminated, another local optimization was performed.
+
+Local optimization was performed with the Nelder-Mead simplex algorithm
+\citep{neldermead}.  The Nelder–Mead method, also referred to as the
+downhill simplex method, is a derivative-free heuristic optimization
+method.  It uses a simplex, a shape with $n+1$ vertices in
+$n$-dimensional space (e.g. a triangle on a plane or a tetrahedron is
+three-dimensional space), to approximate the objective function
+behavior.  The vertices of the simplex, the test points, are then
+reflected, expanded, or contracted to move towards the optimal point.
+The process terminates when the simplex becomes sufficiently small or
+the test points have nearly identical performance.  As with the genetic
+algorithm, a local implementation of the Nelder-Mead algorithm was used
+to enable multi-threading and constraint handling via the chosen penalty
+method.  To focus the algorithm purely on local optimization, and not
+global exploration of other possible floating substructure
+configurations, only continuous design variables were used.  Integer
+design variables such as the number of offset columns or mooring lines
+were frozen at their values chosen by the NSGA-II algorithm.
+Additionally, since this approach is best suited for finding local
+minima near the initial condition, it is the only algorithm used for the
+design sensitivity portions of the analysis.
+
+User parameters values and simplex initialization methodology was
+borrowed from the open source SciPy implementation of the Nelder-Mead
+algorithm.  Initialization was done where each vertex, or test point, in
+the simplex perturbed one of the design variables by 5\%, with the
+remaining design variables left at their baseline value.  As a larger
+design problem with over 100 design variables (for the semisubmersible),
+the parameters that govern the iterative modification of the simplex
+were assigned dimension-dependent values,
+\begin{equation}
+\alpha = 1.0, \quad \beta = 0.75 - \frac{1}{2n}, \quad \gamma = 1+\frac{2}{n} 
+\quad \delta = 1 - \frac{1}{n};
+\end{equation}
+where the parameters are $\alpha$ for reflection, $\beta$ for
+contraction, $\gamma$ for expansion and $\delta$ for shrinkage. These
+values differ from those originally used by \citet{neldermead}, but are
+recommended for high-dimensional optimization problems.
+
+\subsubsection{Rationale for Derivative-Free Algorithms}
+Derivative-free optimization algorithms were chosen for a few reasons,
+despite their known performance drawbacks in terms of wall-clock time.
+First, to do a complete configuration optimization of the substructure,
+a mixed-integer capable algorithm is required.  No gradient-based
+optimziation algorithm is capable of handling these types of variables
+directly (unless a rounding approximation is used).  This was the
+primary reason for the selection of a genetic algorithm for the global
+design space search and optimization step.
+
+Another reason for the selection of derivative-free algorithms is that
+the analysis flow uses a number of third-party, black box tools or
+algorithms that do not come with analytical gradients.  This includes
+Frame3DD, MAP++, and some of the API 2U procedures that rely on roots of
+nonlinear equations.  Thus, gradient-based optimization algorithms would
+be forced to use finite difference approximations around these tools at
+the very least.  However, derivatives approximated with finite
+differences are expensive to compute accurately.  If computed
+inaccurately, for the sake of reducing computational time, finite
+difference derivatives can easily lead an optimization algorithm astray,
+especially in highly nonlinear or tightly constrained regions of the
+design space.  This is another reason for the use of
+derivative-free algorithms, even when conducting local neighborhood
+design space optimization and/or sensitivity studies.
+
+\subsubsection{Constraint Handling}
+The standard optimization problem statement is modified in this
+application to use a penalty approach for constraint handling.  Instead
+of treating the set of constraints, $\mbf{g}(\mbf{x})$, as
+\textit{hard}-constraints that absolutely must be satisfied, a penalty
+method treats them as \textit{soft}-constraints, that are considered in
+conjunction with the objective function.  This is a common approach that
+involves summation of a constraint violations into a single metric.
+This metric is then scaled and added or multiplied to the objective
+function value of each solution.  \citet{yeniay05} provides a nice
+summary of the use of penalty methods in genetic algorithms.  In our
+implementation, an \textit{adaptive} penalty approach is used where the
+scaling of the constraint violation summation is dependent on the value
+of the objective function of the best solution in the population.  With
+this approach, the problem formulation becomes,
+\begin{equation}
+\begin{array}{ll}
+  \min & \Phi(\mbf{x}) = f\left(\mbf{x}\right) + p\left(\mbf{x}\right)\\
+  \text{subject to}& \mbf{x} \in \mbf{X}\\
+  \end{array}
+\end{equation}
+where $\Phi(\mbf{x})$ is the new objective function and $p(\mbf{x})$ is
+the penalty function.  This function is configured as a summation of
+constraint violations only (constraints that are satisfied add zero to the summation),
+\begin{equation}
+p\left(\mbf{x}\right) = \lambda \sum_i^m \max\left[0,g_i
+  \left(\mbf{x}\right)\right];
+\qquad \lambda = 10^{\text{floor} \left( \log_{10} \min\left[f\left(x_1\right)
+  \ldots f\left(x_k\right) \right] \right)}
+\end{equation}
+and $\lambda$ is the adaptive scaling parameter, which is essentially
+set to the next order of magnitude above that of the objective function
+for the best performing solution in the population.
+
+A penalty approach is used in our application of conceptual design of a
+floating offshore wind energy system because its advantages outweigh its
+challenges.  A standard drawback of the penalty approach is that it can
+be difficult to find a problem independent method for constraint
+summation and scaling parameters.  First among the advantages of a
+penalty approach is the fluid searching of the tradespace between the
+pockets of feasibility.  Meaning, our tradespace is like swiss cheese,
+with pockets of feasibility for spars, semisubmersibles, TLPs, and their
+hybrids.  In between these pockets are many infeasible designs that
+violate the many constraints involved.  A penalty approach allows the
+optimizer to cross fluidly from one pocket of feasibility to another.
+The second advantage is that a penalty approach can identify promising
+designs even when they are not fully compliant with all constraints.
+Essentially, the constraints involved are truly \textit{soft}
+constraints and not \textit{hard} constraints.  In practice, small
+violations of constraints in the conceptual design can typically be
+mended during the detailed design phase.  Furthermore, the low-fidelity
+representation of the physics likely fails to capture all of the nuances
+involved in the constraint evaluation, so promising designs should not
+be discarded until fully vetted by higher-fidelity models.
+
+\subsubsection{Design Variables}
+In WISDEM, via OpenMDAO, any input parameter can be designated a design
+variable.  The design variables used in this study focused on the
+geometric specification of the floating substructure and mooring
+subsystem.  Slightly different design variables and bounds were used for
+spar, semisubmersible, and TLP optimizations.  The complete listing of
+the design variables for each optimization configuration is shown in
+Table \ref{tbl:designvar}.  Note that the integer design variables were
+only used in the global optimization with the genetic algorithm, not the
+local search with the simplex algorithm.
+
+\begin{table}[htbp] \begin{center}
+    \caption{Standard design variables, their size, and units used for
+      optimization in \textit{FloatingSE}.  Note that $n_s$ denotes the
+      number of sections in the column discretization.}
+    \label{tbl:designvar}
+{\footnotesize
+  \begin{tabular}{ l c l c l } \hline
+    \textbf{Variable} & \textbf{Units} & \textbf{Type} & \textbf{Bounds} & \textbf{Comments} \\ \hline \hline
+    Main col section height & \unit{$m$} & Float array ($n_s$) & 0.1--50 &\\
+    Main col outer diameter & \unit{$m$} & Float array ($n_s+1$) &2.1--40 &\\
+    Main col wall thickness & \unit{$m$} & Float array ($n_s+1$)  &0.001--0.5 &\\
+    Main col freeboard & \unit{$m$} & Float scalar &0--50 &\\
+    Main col stiffener web height & \unit{$m$} & Float array ($n_s$) &0.01--1 &\\
+    Main col stiffener web thickness & \unit{$m$} & Float array ($n_s$) &0.001--0.5 &\\
+    Main col stiffener flange width & \unit{$m$} & Float array ($n_s$) &0.01--5 &\\
+    Main col stiffener flange thickness & \unit{$m$} & Float array ($n_s$) &0.001--0.5 &\\
+    Main col stiffener spacing & \unit{$m$} & Float array ($n_s$) &0.1--100 &\\
+    Main col permanent ballast height & \unit{$m$} & Float scalar &0.1--50 &\\
+    Main col buoyancy tank diameter & \unit{$m$} & Float scalar &0--50 &\\
+    Main col buoyancy tank height & \unit{$m$} & Float scalar &0--20 &\\
+    Main col buoyancy tank location (fraction) && Float scalar &0--1 &\\
+    \hline
+    Number of offset cols && Integer scalar & 3-5 & semi only\\
+    Offset col section height & \unit{$m$} & Float array ($n_s$) &0.1--50&semi only\\
+    Offset col outer diameter & \unit{$m$} & Float array ($n_s+1$)&1.1--40&semi only\\
+    Offset col wall thickness & \unit{$m$} & Float array ($n_s+1$) &0.001--0.5&semi only\\
+    Offset col freeboard & \unit{$m$} & Float scalar &2--15 &semi only\\
+    Offset col stiffener web height & \unit{$m$} & Float array ($n_s$) &0.01--1&semi only\\
+    Offset col stiffener web thickness & \unit{$m$} & Float array ($n_s$) & 0.001--0.5&semi only\\
+    Offset col stiffener flange width & \unit{$m$} & Float array ($n_s$) & 0.01--5&semi only\\
+    Offset col stiffener flange thickness & \unit{$m$} & Float array ($n_s$) & 0.001--0.5&semi only\\
+    Offset col stiffener spacing & \unit{$m$} & Float array ($n_s$) &0.01--100&semi only\\
+    Offset col permanent ballast height & \unit{$m$} & Float scalar &0.1--50&semi only\\
+    Offset col buoyancy tank diameter & \unit{$m$} & Float scalar &0--50 & semi only\\
+    Offset col buoyancy tank height & \unit{$m$} & Float scalar &0--20 & semi only\\
+    Offset col buoyancy tank location (fraction) && Float scalar & 0--1 & semi only\\
+    Radius to offset col & \unit{$m$} & Float scalar &5--100 &semi only\\
+    \hline
+    Pontoon outer diameter & \unit{$m$} & Float scalar &0.1--10 &semi only\\
+    Pontoon wall thickness & \unit{$m$} & Float scalar &0.01--1 &semi only\\
+    Lower main-offset pontoons && Integer scalar & 0--1 & semi only\\
+    Upper main-offset pontoons && Integer scalar & 0--1 & semi only\\
+    Cross main-offset pontoons && Integer scalar & 0--1 & semi only\\
+    Lower offset ring pontoons && Integer scalar & 0--1 & semi only\\
+    Upper offset ring pontoons && Integer scalar & 0--1 & semi only\\
+    Outer V-pontoons && Integer scalar & 0--1 & semi only\\
+    Main col pontoon attach lower (fraction) && Float scalar & 0--0.5&semi only\\
+    Main col pontoon attach upper (fraction) && Float scalar & 0.5--1&semi only\\
+    \hline
+    Fairlead (fraction) && Float scalar &0--1 &\\
+    Fairlead offset from col & \unit{$m$} & Float scalar & 5--30 & TLP only\\
+    Fairlead pontoon diameter & \unit{$m$} & Float scalar & 0.1--10 &\\
+    Fairlead pontoon wall thickness & \unit{$m$} & Float scalar &0.001--1 &\\
+    Number of mooring connections && Integer scalar &3--5 &\\
+    Mooring lines per connection && Integer scalar &1--3 &\\
+    Mooring diameter & \unit{$m$} & Float scalar &0.05--2 &\\
+    Mooring line length & \unit{$m$} & Float scalar &0--3000 &TLP 10--300\\
+    Anchor distance & \unit{$m$} & Float scalar &0--5000 & TLP 20-100\\
+  \hline \end{tabular}
+}
+\end{center} \end{table}
+
+
+\subsubsection{Constraints}
+Due to the many design variables, permutations of settings, and applied
+physics, there are many constraints that must be applied for an
+optimization to close.  The constraints capture both physical
+limitations, such as column buckling, but also inject industry
+standards, guidelines, and lessons learned from engineering experience
+into the optimization.  As described in Section \ref{sec:intro}, this is
+a critically important element in building a MDAO framework for
+conceptual design that yields feasible results worth interrogating
+further with higher-fidelity tools.  The constraints used in the
+substructure design optimization and sensitivity studies are listed in
+Table \ref{tbl:constraints}.  Where appropriate, some of the constraint
+values differ from one type of substructure to another.
+
+\begin{table}[htbp] \begin{center}
+    \caption{Optimization constraints used in \textit{FloatingSE}.}
+    \label{tbl:constraints}
+    {\footnotesize
+  \begin{tabularx}{\textwidth}{ c l c X} \hline
+    \textbf{Lower} & \textbf{Name} & \textbf{Upper} & \textbf{Comments}\\
+\hline \hline
+ & \textbf{Tower / Main / Offset Columns} &  & \\
+ & Eurocode global buckling & 1.0 & \\
+ & Eurocode shell buckling & 1.0 & \\
+ & Eurocode stress limit & 1.0 & \\
+  & Manufacturability & 0.5 & Taper ratio limit\\
+  120.0 & Weld-ability &  & Diameter:thickness ratio limit\\
+\hline & \textbf{Main / Offset Columns} &  & \\
+ & Draft ratio & 1.0 & Ratio of draft to max value (spar \unit[200]{m}, semi/TLP \unit[30]{m})\\
+ & API 2U general buckling- axial loads & 1.0 & \\
+ & API 2U local buckling- axial loads & 1.0 & \\
+ & API 2U general buckling- external loads & 1.0 & \\
+ & API 2U local buckling- external loads & 1.0 & \\
+ & Wave height:freeboard ratio & 1.0 & Maximum wave height relative to freeboard\\
+  1.0 & Stiffener flange compactness &  & \\
+  1.0 & Stiffener web compactness &  & \\
+ & Stiffener flange spacing ratio & 1.0 & Stiffener spacing relative to flange width\\
+ & Stiffener radius ratio & 0.50 & Stiffener height relative to diameter\\
+\hline & \textbf{Offset Columns} &  & \textit{Semi only}\\
+  0.0 & Heel freeboard margin &  & Height required to stay above waterline at max heel\\
+  0.0 & Heel draft margin &  & Draft required to stay submerged at max heel\\
+\hline & \textbf{Pontoons} &  & \textit{Semi only}\\
+ & Eurocode stress limit & 1.0 &\\
+\hline & \textbf{Tower} &  & \\
+  -0.01 & Hub height error & 0.01 &\\
+\hline & \textbf{Mooring} &  & \\
+  0.0 & Axial stress limit & 1.0 &\\
+ & Line length limit & 1.0 & Loss of tension or catenary hang\\
+ & Heel moment ratio & 1.0 & Ratio of overturning moment to restoring moment\\
+ & Surge force ratio & 1.0 & Ratio of surge force to restoring force\\
+\hline & \textbf{Geometry} &  & \\
+  1.0 & Main-offset spacing &  & Minimum spacing between main and offset columns \\
+  0.0 & Fairlead:draft ratio & 1.0 &\\
+  0.0 & Nacelle transition buffer &  & Tower diameter limit at nacelle junction\\
+  -1.0 & Tower transition buffer & 1.0 & Diameter consistency at freeboard point\\
+\hline & \textbf{Stability} &  & \\
+  0.10 & Metacentric height &  & \textit{Not applied to TLPs}\\
+  1.0 & Wave-Eigenmode boundary (upper) &  & Natural frequencies below wave frequency range\\
+ & Wave-Eigenmode boundary (lower) & 1.0 & Natural frequencies above wave frequency range\\
+  0.0 & Water ballast height limit & 1.0 & \\
+  0.0 & Water ballast mass &  & Neutral buoyancy\\
+    \hline \end{tabularx}
+  }
+\end{center} \end{table}
