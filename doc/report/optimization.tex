@@ -1,7 +1,7 @@
-\section{Analysis}
+\chapter{Analysis}
 \label{sec:opt}
 
-\subsection{Procedure}
+\section{Procedure}
 Single scenario execution of \textit{FloatingSE} and/or WISDEM is
 sufficient to explore some simple one-off or comparison analyses between
 a few runs.  However, executing the model within an optimization
@@ -17,7 +17,7 @@ two layers of optimization-based analyses presented in this work:
   the mass of the nacelle and re-optimizing the substructure.
 \end{enumerate}
 
-\subsubsection{Substructure Design}
+\subsection{Substructure Design}
 The first step in the analysis procedure is the conceptual design of a
 spar, semisubmersible, and TLP floating substructure for the same
 turbine configuration.  Many studies in the literature focus on the
@@ -35,7 +35,7 @@ deliberate modification of the nacelle mass for the sensitivity study.
 This isolated the design variables and constraints to be those
 associated with the substructure exclusively.
 
-\subsubsection{Sensitivity Studies}
+\subsection{Sensitivity Studies}
 Following the successful conceptual design of the floating
 substructures, a sensitivity study was executed relating the mass at the top of the
 tower to the mass and cost of the substructure.  This was accomplished
@@ -69,7 +69,7 @@ propagated through the rest of the system.  WISDEM is an appropriate
 framework for posing and answering this type of question.
 
 
-\subsubsection{Reference Turbine Selection}
+\subsection{Reference Turbine Selection}
 For all elements of the optimization studies, attention is given to the
 substructure and the performance of \textit{FloatingSE}.  A reference
 turbine design was needed as a starting point by which the conceptual
@@ -86,7 +86,7 @@ literature.  For a summary of the DTU \unit[10]{MW} reference turbine,
 see \citet{dtu10mw}.
 
 
-\subsubsection{Metocean Conditions}
+\subsection{Metocean Conditions}
 In addition to choosing a reference turbine, it was also necessary to
 choose the meteorological and oceanographic (metocean) conditions of the
 environment.  As mentioned in Section \ref{sec:theory},
@@ -112,7 +112,7 @@ OC3 effort \citep{OC3}, and summarized in Table \ref{tbl:metocean}.
 \end{center} \end{table}
 
 
-\subsection{Methodology}
+\section{Methodology}
 In this project, optimization studies start with the formulation of
 a constrained, nonlinear single-objective optimization problem with
 mixed-integer design variables,
@@ -145,7 +145,7 @@ application is the number of offset columns or the number of mooring
 line connections.
 
 
-\subsubsection{Objectives}
+\subsection{Objectives}
 As described above, two objective functions are used in this analysis:
 \begin{itemize}
 \item \textbf{Substructure system mass:} The mass of components from the
@@ -155,7 +155,7 @@ As described above, two objective functions are used in this analysis:
 \end{itemize}
 
 
-\subsubsection{Algorithms}
+\subsection{Algorithms}
 Two derivative-free optimization algorithms were applied sequentially to
 the substructure design problem:
 \begin{enumerate}
@@ -243,7 +243,7 @@ contraction, $\gamma$ for expansion and $\delta$ for shrinkage. These
 values differ from those originally used by \citet{neldermead}, but are
 recommended for high-dimensional optimization problems.
 
-\subsubsection{Rationale for Derivative-Free Algorithms}
+\subsection{Rationale for Derivative-Free Algorithms}
 Derivative-free optimization algorithms were chosen for a few reasons,
 despite their known performance drawbacks in terms of wall-clock time.
 First, to do a complete configuration optimization of the substructure,
@@ -268,7 +268,7 @@ design space.  This is another reason for the use of
 derivative-free algorithms, even when conducting local neighborhood
 design space optimization and/or sensitivity studies.
 
-\subsubsection{Constraint Handling}
+\subsection{Constraint Handling}
 The standard optimization problem statement is modified in this
 application to use a penalty approach for constraint handling.  Instead
 of treating the set of constraints, $\mbf{g}(\mbf{x})$, as
@@ -323,7 +323,7 @@ representation of the physics likely fails to capture all of the nuances
 involved in the constraint evaluation, so promising designs should not
 be discarded until fully vetted by higher-fidelity models.
 
-\subsubsection{Design Variables}
+\subsection{Design Variables}
 In WISDEM, via OpenMDAO, any input parameter can be designated a design
 variable.  The design variables used in this study focused on the
 geometric specification of the floating substructure and mooring
@@ -397,7 +397,7 @@ local search with the simplex algorithm.
 \end{center} \end{table}
 
 
-\subsubsection{Constraints}
+\subsection{Constraints}
 Due to the many design variables, permutations of settings, and applied
 physics, there are many constraints that must be applied for an
 optimization to close.  The constraints capture both physical
@@ -415,7 +415,7 @@ values differ from one type of substructure to another.
     \caption{Optimization constraints used in \textit{FloatingSE}.}
     \label{tbl:constraints}
     {\footnotesize
-  \begin{tabularx}{\textwidth}{ c l c X} \hline
+  \begin{tabular}{ c l c l} \hline
     \textbf{Lower} & \textbf{Name} & \textbf{Upper} & \textbf{Comments}\\
 \hline \hline
  & \textbf{Tower / Main / Offset Columns} &  & \\
@@ -458,6 +458,6 @@ values differ from one type of substructure to another.
  & Wave-Eigenmode boundary (lower) & 1.0 & Natural frequencies above wave frequency range\\
   0.0 & Water ballast height limit & 1.0 & \\
   0.0 & Water ballast mass &  & Neutral buoyancy\\
-    \hline \end{tabularx}
+    \hline \end{tabular}
   }
 \end{center} \end{table}

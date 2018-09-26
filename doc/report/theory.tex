@@ -1,7 +1,7 @@
-\section{Design Evaluation}
+\chapter{Design Evaluation}
 \label{sec:theory}
 
-\subsection{Design Load Cases (DLCs)}
+\section{Design Load Cases (DLCs)}
 The user must specify the metocean conditions that drive the wind and
 wave loads upon the floating substructure.  \textit{FloatingSE}
 currently only uses the single load case of maximum thrust coincident
@@ -10,7 +10,7 @@ multiple DLCs and metocean conditions would be used for design
 optimization.  The capability to optimize over multiple DLCs will be
 added to future versions of the model.
 
-\subsection{Load Path}
+\section{Load Path}
 As with other WISDEM models, the primary simplification in
 \textit{FloatingSE} is the treatment of all loads as pseudo-static. This
 approximation reduces computational time and resources, since an
@@ -31,7 +31,7 @@ these two dominant load sources, as well as the self-loading of gravity
 loads.  Other sources of loading, such as installation loads, accidental
 loads, vortex-induced vibrations, ice, and seismic loads are ignored.
 
-\subsubsection{Wind and Wave Loads}
+\subsection{Wind and Wave Loads}
 Wind drag loads are applied to the tower body and the upper part of the
 substructure that extends above the waterline.  They are not applied to
 connecting truss members that may be part of the substructure geometry.
@@ -105,7 +105,7 @@ $\kappa x - \omega t$ term, since the maximum of any hyperbolic sine or cosine
 term is one.
 
 
-\subsubsection{Rotor Nacelle Assembly (RNA) Loads}
+\subsection{Rotor Nacelle Assembly (RNA) Loads}
 From a quasi-steady-state point of view, the RNA loads reduce to three
 forces and three moments along the main coordinate axes
 \citep{JacketSE}. The thrust is the biggest force responsible for the
@@ -118,7 +118,7 @@ not compute the force and moment components directly, but rather accepts
 them as inputs from other WISDEM modules or from the user directly.
 
 
-\subsection{Structural Analysis}
+\section{Structural Analysis}
 The analysis tool, Frame3DD, is an open-source tool for static and
 dynamic structural analysis of 2-D and 3-D frames and trusses with
 elastic and geometric stiffness. It computes the static deflections,
@@ -130,7 +130,7 @@ integration of all loads happens within Frame3DD, where the whole floating
 turbine load path, from the rotor to the keel of the substructure, is
 modeled with Timoshenko frame elements \citep{timoshenko}.
 
-\subsubsection{Discretization}
+\subsection{Discretization}
 For the finite element structural analysis of the substructure, the
 discretization of the main columns into a handful of sections is still
 too coarse to capture the appropriate physics. Long slender components,
@@ -152,7 +152,7 @@ shell.  However, the material mass density of the frame element is
 scaled to reflect the true mass of the whole section, including ballast,
 to ensure that gravity loads are captured correctly.
 
-\subsubsection{Loads}
+\subsection{Loads}
 All of the loads described above are integrated together within
 Frame3DD.  These loads include,
 \begin{itemize}
@@ -175,7 +175,7 @@ trapezoidally varying loads along the column elements.  Other loads
 applied to the structure include the gravity loads, and the buoyancy
 acting on the submerged elements.
 
-\subsubsection{Boundary Conditions}
+\subsection{Boundary Conditions}
 Multiple boundary conditions are applied to the structure.  The mooring
 system stiffness matrix (linearized about the neutral position) is
 applied at the mooring connection nodes.  However, even with the mooring
@@ -185,7 +185,7 @@ Thus, in order to successfully compute stress and buckling limits in a
 well-posed problem, an additional rigid boundary condition (in all 6
 DOF) is imposed at the bottom node of the main column.
 
-\subsubsection{Outputs}
+\subsection{Outputs}
 Structural analysis outputs include mass properties of the structure,
 member stresses, and summary forces and moments on the body.  Mass
 properties include the total mass of the floating turbine and the mass
@@ -223,7 +223,7 @@ of the terms without losing generality.
 
 
 
-\subsubsection{Code Compliance as Utilizations}
+\subsection{Code Compliance as Utilizations}
 Once the stress components of all structural members are computed, they
 are compared against design code standards for compliance, and serve as
 design constraints when conducting optimization.  Multiple code
@@ -257,7 +257,7 @@ Future efforts will also apply Bulletin 2V, the standards for plates, to
 the legs that support taut mooring lines.
 
 
-\subsection{Mooring Lines}
+\section{Mooring Lines}
 The quasi-steady mooring system analysis is handled by the external
 Mooring Analysis Program (MAP++) library \citep{MAP}, which has
 convenient Python bindings to access the simulation output, bundled into
@@ -288,9 +288,9 @@ MBL = 1000 \max\left(1.0, -5445.3 + 176972.7 d\right)
 \end{equation}  
 
 
-\subsection{Hydrostatic Stability}
+\section{Hydrostatic Stability}
 \label{sec:static}
-\subsubsection{Neutral Buoyancy}
+\subsection{Neutral Buoyancy}
 Any floating body requires enough water displacement to create
 sufficient buoyancy force such that the body stays afloat in the most
 extreme loading and environmental conditions.  This level of
@@ -309,7 +309,7 @@ the frustum shell cross section profile above the permanent ballast to
 determine the height of the water ballast within the column.  Once this
 is determined, the final center of mass of the system can be determined.
 
-\subsubsection{Surge/Sway Stability}
+\subsection{Surge/Sway Stability}
 Surge and sway stability is not actively tracked over the coarse of a
 load case.  Instead the total surge force on the structure is calculated
 at the initial conditions and compared to the restoring force of the
@@ -342,7 +342,7 @@ and wave profiles are essentially 2-D in the $x-z$ plane, the sway
 stability is given the same status as surge stability.
 
 
-\subsubsection{Pitch Stability}
+\subsection{Pitch Stability}
 The approach to pitch stability determination is similar to that of
 surge stability.  The total pitching moment on the floating turbine is
 calculated and compared to the restoring moment at the maximum allowable
@@ -438,7 +438,7 @@ contributions,
   M_{y,restore} = M_{y,moor} + M_{meta}
 \end{equation}
 
-\subsection{Hydrodynamic Stability}
+\section{Hydrodynamic Stability}
 Floating bodies are typically modeled, for small motions and linearized
 behavior, as a second-order differential system with mass, damping, and
 spring stiffness terms,
@@ -508,7 +508,7 @@ range, \unit[0.5--5]{Hz}, and expressed as a design constraint (with a
 partial safety factor).
 
 
-\subsection{Validation}
+\section{Validation}
 The International Energy Agency has sponsored a number of international
 research collaborations to further the state of wind energy technology and
 tools.  One of these, Task 30: Offshore Code Comparison Collaboration

@@ -3,28 +3,28 @@
 % ---------------
 % PREAMBLE
 % ---------------
-%\documentclass[tagged]{NRELreport}
+\documentclass[tagged]{NRELreport}
 %\documentclass[tagged,11pt]{NRELarticle}
-\documentclass[10pt]{article}
+%\documentclass[10pt]{article}
 \usepackage{tabularx}
 \usepackage{units}
 \usepackage{array}
-\usepackage{setspace}
-\usepackage{subcaption}
-\usepackage{graphics,graphicx,color}
-\usepackage{amsmath,amsthm,amssymb,amsfonts,stmaryrd,latexsym}
+%\usepackage{setspace}
 \usepackage{hyperref}
 %--------------------------------------------------------------------%
 % Comment out for NREL class
-\usepackage[margin=1in]{geometry}
-\usepackage[format=hang,labelfont={small,bf},textfont=small]{caption}
-\usepackage[square,comma,numbers,sort&compress]{natbib}
+%\usepackage{subcaption}
+%\usepackage{graphics,graphicx,color}
+%\usepackage{amsmath,amsthm,amssymb,amsfonts,stmaryrd,latexsym}
+%\usepackage[margin=1in]{geometry}
+%\setstretch{1.1}
+%\usepackage[format=hang,labelfont={small,bf},textfont=small]{caption}
+%\usepackage[square,comma,numbers,sort&compress]{natbib}
 %--------------------------------------------------------------------%
 \graphicspath{{figs/}}
 \DeclareGraphicsExtensions{.pdf}
-\setstretch{1.1}
 % -----------------------------------
-%\addbibresource{offshore.bib}
+\addbibresource{offshore.bib}
 % -----------------------------------
 % DOCUMENT PROPERTIES
 % -----------------------------------
@@ -50,47 +50,20 @@
 \newcommand{\fourth}{\raise.5ex\hbox{\small th}}
 \renewcommand{\th}{\raise.5ex\hbox{\tiny th}}
 
-%--------------------------------------------------------------------%
-%\setstretch{1.3}
-%--------------------------------------------------------------------%
-
 % -------------------------------------
 % DOCUMENT STARTS HERE
 % -------------------------------------
-%\lstset{language=Python,columns=fullflexible,keepspaces=true,breaklines=true,basicstyle=\scriptsize\ttfamily,mathescape=true,aboveskip=-6pt,belowskip=0pt}
-%\setcounter{tocdepth}{1}
+\setcounter{tocdepth}{1}
 \begin{document}
 
-%\frontmatter
-%\mainmatter
-\maketitle
-\section*{Abstract}
-This work introduces \textit{FloatingSE}, the floating offshore wind
-turbine substructure cost, sizing, and analysis module in the Wind-Plant
-Integrated System Design \& Engineering Model (WISDEM) framework.  The
-tool generalizes its geometry parameterization so as to use the same set
-of variables to describe spars, semisubmersibles, tension leg platforms
-(TLPs), and hybrids of those archetypes.  Design evaluation is done by
-the application of existing codes and standards, hydrostatic principals,
-and simple beam finite element static structural analysis.  With other
-multidisciplinary WISDEM modules, the inclusion of \textit{FloatingSE}
-enables the vertical simulation of a floating offshore wind turbine,
-even a whole plant if desired.  To showcase this capability, a two-step
-optimized-based analysis was carried out.  First, three different
-substructures, a spar, semisubmersible, and TLP, were designed beneath a
-\unit[10]{MW} reference turbine. Second, a design sensitivity study was
-conducted where mass in the nacelle was parametrically removed, to
-simulate the addition of a novel drivetrain or generator technology, and
-the design re-optimized.  The derived sensitivities were used to
-ascertain the break-even cost rate of the new technology that reduces
-the drivetrain mass, but at a cost premium (\$1,000 for the spar, \$450
-for the semisubmersible, and \$100 for the TLP).  Another noteworthy
-observation is that mass is poor surrogate for cost in optimization
-studies, a convention frequently used in conceptual design studies.  Due
-to the many simplifying assumptions and low-fidelity analysis, the
-optimized design and sensitivity values come with many caveats and are
-subject to change following future development.
-
+%\maketitle
+\frontmatter
+\input{abstract}
+\mainmatter
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
 \input{introduction}
 \input{geometry}
 \input{theory}
@@ -99,17 +72,15 @@ subject to change following future development.
 \input{conclusions}
 
 % bibliography
-%\cleardoublepage
-%\label{sec:Bib}
-%\printbibliography[heading=bibintoc]
+\cleardoublepage
+\label{sec:Bib}
+\printbibliography[heading=bibintoc]
 
-\begin{singlespace} \begin{small} \pagestyle{plain}
-    \bibliography{offshore}
-    %\bibliographystyle{aiaa}
-    %\bibliographystyle{plainnat}
-    \bibliographystyle{nattyice-long}
-    \addcontentsline{toc}{chapter}{\hspace{3ex}Bibliography}
-\end{small} \end{singlespace}
+%\begin{singlespace} \begin{small} \pagestyle{plain}
+%    \bibliography{offshore}
+%    \bibliographystyle{nattyice-long}
+%    \addcontentsline{toc}{chapter}{\hspace{3ex}Bibliography}
+%\end{small} \end{singlespace}
 
 
 \end{document}

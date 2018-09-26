@@ -1,4 +1,4 @@
-\section{Geometry}
+\chapter{Geometry}
 \label{sec:geom}
 This section describes the variables and methods used to parameterize
 the substructure geometry in \textit{FloatingSE}.  Typically,
@@ -46,7 +46,7 @@ ones shown.
   \end{center}
 \end{figure}
 
-\subsection{Tapered Cylinders (Vertical Frustums)}
+\section{Tapered Cylinders (Vertical Frustums)}
 A number of typical floating substructure designs, such as the spar or
 semisubmersible, contain vertically oriented columns.  In
 \textit{FloatingSE}, these columns are
@@ -81,7 +81,7 @@ material options for each section in each cylinder.
   \label{fig:column}
 \end{figure}
 
-\subsection{Discretization}
+\section{Discretization}
 To allow for varying geometry parameters along the length of
 substructure columns, the larger components are divided into sections.
 The user may specify the number of overall sections, $n_s$ and the
@@ -93,7 +93,7 @@ ring stiffeners.  The number of sections should resemble the physical
 number of cans or sections used in the manufacturing of the real
 article.
 
-\subsubsection{Ballast}
+\subsection{Ballast}
 Substructure columns with long drafts can enhance stability by placing
 heavy ballast, such as magnetite iron ore, at their bottom sections.
 The user can specify the density of the permanent ballast added and the
@@ -103,7 +103,7 @@ the permanent ballast to achieve neutral buoyancy as the operating
 conditions of the turbine change.  A discussion of variable water
 balance in the model is found in Section \ref{sec:static}.
 
-\subsubsection{Buoyancy Tanks (and Heave Plates)}
+\subsection{Buoyancy Tanks (and Heave Plates)}
 Buoyancy tanks are modeled as a collar around the column and are not
 subject the same taper or connectivity constraints as the frustum
 sections.  They therefore offer added buoyancy without incurring as much
@@ -113,7 +113,7 @@ height, the user can adjust the location of the buoyancy tank from the
 column base to the top. Buoyancy tanks can be added to either the main
 and/or offset columns.
 
-\subsection{Pontoons and Support Structure}
+\section{Pontoons and Support Structure}
 Many substructure designs include the use of pontoons that form a truss
 to connect the different components, usually columns, together.  In this
 model, all of the pontoons are assumed to have the identical thin-walled
@@ -135,7 +135,7 @@ and the V-shaped cross members between offset columns ($F$).
 \end{figure}
 
 
-\subsection{Mooring Lines}
+\section{Mooring Lines}
 The mooring system is described by the number of lines, their geometry,
 and their interface to the substructure.  The mooring diameter is set by
 the user and determines the breaking load and stiffness of the chain,
@@ -155,7 +155,7 @@ plans to include gravity anchors as well.  The standard configuration
 for TLPs is the use of taut nylon mooring lines with suction-pile
 anchors.
 
-\subsection{Mass and Cost Scaling}
+\section{Mass and Cost Scaling}
 The mass of all components in the modeled substructure is captured
 through calculation of each components' volume and multiplying by its material
 density.  This applies to the frustum shells, the ring stiffeners, the
