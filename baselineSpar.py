@@ -12,11 +12,13 @@ def mypromote(mysub, myturb):
 
 def setobj(myobj):
     mycwd = os.getcwd()
+    prefix = '' if 'rna_cg' in myobj.params else 'sm.'
     if mycwd.lower().find('cost') >= 0:
-        myobj.prob.driver.add_objective('total_cost', scaler=1e-9)
+        myobj.add_objective(prefix+'total_cost', 1e-9)
     else:
-        myobj.prob.driver.add_objective('load.structural_mass', scaler=1e-6)
+        myobj.add_objective(prefix+'load.structural_mass', 1e-6)
     return myobj
+
 
 def mysetup(myobj, discrete=True):
 
@@ -87,7 +89,12 @@ if __name__ == '__main__':
 
     # SOGA
     mysub.set_optimizer('soga')
-    mysub.set_options({'generations':5000, 'population':30, 'restart':False, 'penalty':True, 'nstall':400, 'probability_of_mutation':0.4})
+    mysub.set_options({'generations':5000,
+                       'population':30,
+                       'restart':False,
+                       'penalty':True,
+                       'nstall':400,
+                       'probability_of_mutation':0.4})
     mysub = mysetup(mysub)
     mysub.run()
     mysub.save(subsave)
@@ -96,7 +103,13 @@ if __name__ == '__main__':
     # NM
     # Coarse
     mysub.set_optimizer('nm')
-    mysub.set_options({'adaptive_simplex':False, 'tol':1e-6, 'global_search':False,'generations':5000, 'nstall':400})
+    mysub.set_options({'restart':False,
+                       'penalty':True,
+                       'adaptive_simplex':False,
+                       'tol':1e-6,
+                       'global_search':False,
+                       'generations':5000,
+                       'nstall':400})
     mysub = mysetup(mysub, False)
     mysub.run()
     mysub.save(subsave)
@@ -104,7 +117,9 @@ if __name__ == '__main__':
 
     # Fine
     mysub.load(subsave)
-    mysub.set_options({'generations':20000, 'nstall':1000, 'adaptive_simplex':True})
+    mysub.set_options({'generations':20000,
+                       'nstall':1000,
+                       'adaptive_simplex':True})
     mysub.run()
     mysub.save(subsave)
     move('heuristic.restart','nm-fine.restart')
