@@ -12,25 +12,25 @@ def mysetup(myobj, discrete=True):
     myobj.add_design_variable('fairlead_offset_from_shell',5.0, 30.0)
     myobj.add_design_variable('fairlead_support_wall_thickness',1e-3, 1.0)
     myobj.add_design_variable('fairlead_support_outer_diameter',1e-1, 10.0)
-    myobj.add_design_variable('base_freeboard',0.0, 50.0)
-    myobj.add_design_variable('base_section_height',1e-1, 50.0)
-    myobj.add_design_variable('base_outer_diameter',2.1, 20.0)
-    myobj.add_design_variable('base_wall_thickness',1e-3, 5e-1)
-    myobj.add_design_variable('base_ballast_heave_box_diameter',0.0, 50.0)
-    myobj.add_design_variable('base_ballast_heave_box_height',0.0, 20.0)
-    myobj.add_design_variable('base_ballast_heave_box_location',0.0, 1.0)
+    myobj.add_design_variable('main_freeboard',0.0, 50.0)
+    myobj.add_design_variable('main_section_height',1e-1, 50.0)
+    myobj.add_design_variable('main_outer_diameter',2.1, 20.0)
+    myobj.add_design_variable('main_wall_thickness',1e-3, 5e-1)
+    myobj.add_design_variable('main_ballast_heave_box_diameter',0.0, 50.0)
+    myobj.add_design_variable('main_ballast_heave_box_height',0.0, 20.0)
+    myobj.add_design_variable('main_ballast_heave_box_location',0.0, 1.0)
     #myobj.add_design_variable('tower_section_height',1e-1, 100.0)
     #myobj.add_design_variable('tower_outer_diameter',1.1, 20.0)
     #myobj.add_design_variable('tower_wall_thickness',1e-3, 5e-1)
     myobj.add_design_variable('mooring_line_length', 10.0, 300.0)
     myobj.add_design_variable('anchor_radius', 20.0, 1e2)
     myobj.add_design_variable('mooring_diameter', 0.05, 5.0)
-    myobj.add_design_variable('base_permanent_ballast_height', 1e-1, 50.0)
-    myobj.add_design_variable('base_stiffener_web_height', 1e-2, 1.0)
-    myobj.add_design_variable('base_stiffener_web_thickness', 1e-3, 5e-1)
-    myobj.add_design_variable('base_stiffener_flange_width', 1e-2, 5.0)
-    myobj.add_design_variable('base_stiffener_flange_thickness', 1e-3, 5e-1)
-    myobj.add_design_variable('base_stiffener_spacing', 1e-1, 1e2)
+    myobj.add_design_variable('main_permanent_ballast_height', 1e-1, 50.0)
+    myobj.add_design_variable('main_stiffener_web_height', 1e-2, 1.0)
+    myobj.add_design_variable('main_stiffener_web_thickness', 1e-3, 5e-1)
+    myobj.add_design_variable('main_stiffener_flange_width', 1e-2, 5.0)
+    myobj.add_design_variable('main_stiffener_flange_thickness', 1e-3, 5e-1)
+    myobj.add_design_variable('main_stiffener_spacing', 1e-1, 1e2)
     if discrete:
         myobj.add_design_variable('number_of_mooring_connections', 3, 4)
         myobj.add_design_variable('mooring_lines_per_connection', 1, 3)
@@ -64,7 +64,7 @@ mysub.params['Uref'] = 11.0
 mysub.params['zref'] = 119.0
 mysub.params['mooring_max_offset'] = 100.0
 mysub.params['mooring_type'] = 'nylon'
-mysub.params['number_of_auxiliary_columns'] = 0
+mysub.params['number_of_offset_columns'] = 0
 
 myturb = TurbineSparInstance('10MW')
 myturb.set_reference('10MW')
@@ -75,7 +75,7 @@ myturb.params['wind_reference_speed'] = 11.0
 myturb.params['wind_reference_height'] = 119.0
 myturb.params['mooring_type'] = 'nylon'
 myturb.params['anchor'] = wind_obos.Anchor.SUCTIONPILE
-myturb.params['number_of_auxiliary_columns'] = 0
+myturb.params['number_of_offset_columns'] = 0
 
 
 if __name__ == '__main__':

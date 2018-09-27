@@ -12,11 +12,11 @@ def mypromote(mysub, myturb):
 
 def setobj(myobj):
     mycwd = os.getcwd()
-    prefix = '' if 'rna_cg' in myobj.params else 'sm.'
+    prefix = '' #if 'rna_cg' in myobj.params else 'sm.'
     if mycwd.lower().find('cost') >= 0:
         myobj.add_objective(prefix+'total_cost', 1e-9)
     else:
-        myobj.add_objective(prefix+'load.structural_mass', 1e-6)
+        myobj.add_objective(prefix+'structural_mass', 1e-6)
     return myobj
 
 
@@ -26,25 +26,25 @@ def mysetup(myobj, discrete=True):
     #myobj.add_design_variable('fairlead_offset_from_shell',0.0, 5.0)
     myobj.add_design_variable('fairlead_support_wall_thickness',1e-3, 1.0)
     myobj.add_design_variable('fairlead_support_outer_diameter',1e-1, 10.0)
-    myobj.add_design_variable('base_freeboard',0.0, 50.0)
-    myobj.add_design_variable('base_section_height',1e-1, 50.0)
-    myobj.add_design_variable('base_outer_diameter',2.1, 20.0)
-    myobj.add_design_variable('base_wall_thickness',1e-3, 5e-1)
-    myobj.add_design_variable('base_ballast_heave_box_diameter',0.0, 50.0)
-    myobj.add_design_variable('base_ballast_heave_box_height',0.0, 20.0)
-    myobj.add_design_variable('base_ballast_heave_box_location',0.0, 1.0)
+    myobj.add_design_variable('main_freeboard',0.0, 50.0)
+    myobj.add_design_variable('main_section_height',1e-1, 50.0)
+    myobj.add_design_variable('main_outer_diameter',2.1, 20.0)
+    myobj.add_design_variable('main_wall_thickness',1e-3, 5e-1)
+    myobj.add_design_variable('main_ballast_heave_box_diameter',0.0, 50.0)
+    myobj.add_design_variable('main_ballast_heave_box_height',0.0, 20.0)
+    myobj.add_design_variable('main_ballast_heave_box_location',0.0, 1.0)
     #myobj.add_design_variable('tower_section_height',1e-1, 100.0)
     #myobj.add_design_variable('tower_outer_diameter',1.1, 20.0)
     #myobj.add_design_variable('tower_wall_thickness',1e-3, 5e-1)
     myobj.add_design_variable('mooring_line_length', 2e2, 3e3)
     myobj.add_design_variable('anchor_radius', 1e2, 5e3)
     myobj.add_design_variable('mooring_diameter', 0.05, 2.0)
-    myobj.add_design_variable('base_permanent_ballast_height', 1e-1, 50.0)
-    myobj.add_design_variable('base_stiffener_web_height', 1e-2, 1.0)
-    myobj.add_design_variable('base_stiffener_web_thickness', 1e-3, 5e-1)
-    myobj.add_design_variable('base_stiffener_flange_width', 1e-2, 5.0)
-    myobj.add_design_variable('base_stiffener_flange_thickness', 1e-3, 5e-1)
-    myobj.add_design_variable('base_stiffener_spacing', 1e-1, 1e2)
+    myobj.add_design_variable('main_permanent_ballast_height', 1e-1, 50.0)
+    myobj.add_design_variable('main_stiffener_web_height', 1e-2, 1.0)
+    myobj.add_design_variable('main_stiffener_web_thickness', 1e-3, 5e-1)
+    myobj.add_design_variable('main_stiffener_flange_width', 1e-2, 5.0)
+    myobj.add_design_variable('main_stiffener_flange_thickness', 1e-3, 5e-1)
+    myobj.add_design_variable('main_stiffener_spacing', 1e-1, 1e2)
     if discrete:
         #myobj.add_design_variable('number_of_mooring_connections', 3, 4)
         myobj.add_design_variable('mooring_lines_per_connection', 1, 3)

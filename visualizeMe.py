@@ -35,10 +35,10 @@ def name2obj(fstr):
     myobj.evaluate()
     myobj.constraint_report()
     try:
-        print 'mass', 1e-6*myobj.prob['sm.load.structural_mass']
-        print 'cost', 1e-9*myobj.prob['sm.total_cost']
-        print 'R_fairlead', myobj.prob['sm.mm.fairlead_radius']
-        print 'R_aux', myobj.params['radius_to_auxiliary_column']
+        print 'mass', 1e-6*myobj.prob['structural_mass']
+        print 'cost', 1e-9*myobj.prob['total_cost']
+        print 'R_fairlead', myobj.prob['fairlead_radius']
+        print 'R_aux', myobj.params['radius_to_offset_column']
     except:
         pass
     return myobj
