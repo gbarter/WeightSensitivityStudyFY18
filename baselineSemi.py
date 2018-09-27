@@ -6,7 +6,7 @@ from shutil import copyfile, move
 
 def mysetup(myobj, discrete=True):
 
-    myobj.add_design_variable('fairlead',0.0, 20.0)
+    myobj.add_design_variable('fairlead_location',0.0, 1.0)
     #myobj.add_design_variable('fairlead_offset_from_shell',0.0, 5.0)
     myobj.add_design_variable('fairlead_support_wall_thickness',1e-3, 1.0)
     myobj.add_design_variable('fairlead_support_outer_diameter',1e-1, 10.0)
@@ -14,16 +14,16 @@ def mysetup(myobj, discrete=True):
     myobj.add_design_variable('main_section_height',1e-1, 50.0)
     myobj.add_design_variable('main_outer_diameter',2.1, 40.0)
     myobj.add_design_variable('main_wall_thickness',1e-3, 5e-1)
-    myobj.add_design_variable('main_ballast_heave_box_diameter',0.0, 50.0)
-    myobj.add_design_variable('main_ballast_heave_box_height',0.0, 20.0)
-    myobj.add_design_variable('main_ballast_heave_box_location',0.0, 1.0)
+    myobj.add_design_variable('main_buoyancy_tank_diameter',0.0, 50.0)
+    myobj.add_design_variable('main_buoyancy_tank_height',0.0, 20.0)
+    myobj.add_design_variable('main_buoyancy_tank_location',0.0, 1.0)
     myobj.add_design_variable('offset_freeboard',2.0, 15.0)
     myobj.add_design_variable('offset_section_height',1e-1, 50.0)
     myobj.add_design_variable('offset_outer_diameter',1.1, 40.0)
     myobj.add_design_variable('offset_wall_thickness',1e-3, 5e-1)
-    myobj.add_design_variable('offset_ballast_heave_box_diameter',0.0, 50.0)
-    myobj.add_design_variable('offset_ballast_heave_box_height',0.0, 20.0)
-    myobj.add_design_variable('offset_ballast_heave_box_location',0.0, 1.0)
+    myobj.add_design_variable('offset_buoyancy_tank_diameter',0.0, 50.0)
+    myobj.add_design_variable('offset_buoyancy_tank_height',0.0, 20.0)
+    myobj.add_design_variable('offset_buoyancy_tank_location',0.0, 1.0)
     myobj.add_design_variable('pontoon_outer_diameter', 1.0, 10.0)
     myobj.add_design_variable('pontoon_wall_thickness', 1e-2, 1.0)
     myobj.add_design_variable('main_pontoon_attach_lower',0.0, 0.5)
@@ -66,7 +66,6 @@ def mysetup(myobj, discrete=True):
         #elif c[0].find('axial_unity') >= 0: continue
         elif ((c[0].find('tow.') >= 0) and (c[0].find('height') < 0)): continue
 
-        if ((c[0].find('draft') >= 0) and (c[0].find('depth') < 0)): c[2] = 20.0
         myobj.add_constraint(c[0], c[1], c[2], c[3])
 
     myobj.params['number_of_mooring_connections'] = 3
@@ -86,7 +85,8 @@ mysub.params['Hs'] = 10.8
 mysub.params['T'] = 9.8
 mysub.params['Uref'] = 11.0
 mysub.params['zref'] = 119.0
-mysub.params['mooring_max_offset'] = 100.0
+mysub.params['max_offset'] = 100.0
+mysub.params['max_draft'] = 20.0
 
 myturb = TurbineSemiInstance('10MW')
 myturb.set_reference('10MW')

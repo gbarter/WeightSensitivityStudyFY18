@@ -6,6 +6,7 @@ from floatingse.instance.spar_instance import SparInstance
 from floatingse.instance.semi_instance import SemiInstance
 from wisdem.floating.turbine_spar_instance import TurbineSparInstance
 from wisdem.floating.turbine_semi_instance import TurbineSemiInstance
+import numpy as np
 
 plats = ('spar','semi','tlp')
 objs = ('mass','cost')
@@ -22,18 +23,101 @@ for plat in plats:
             if fname.find('spar') >= 0:
                 from baselineSpar import mysetup, mysub, myturb
                 myobj = myturb if fname.find('turb') >= 0 else mysub
+                max_draft = 200.0
+                ncol = 0
                 
             elif fname.find('semi') >= 0:
                 from baselineSemi import mysetup, mysub, myturb
                 myobj = myturb if fname.find('turb') >= 0 else mysub
+                max_draft = 20.0
+                ncol = 3
                 
             elif fname.find('tlp') >= 0:
                 from baselineTLP import mysetup, mysub, myturb
                 myobj = myturb if fname.find('turb') >= 0 else mysub
-                #myobj = TurbineSparInstance(mydtu) if fname.find('turb') >= 0 else SparInstance()
+                max_draft = 35.0
+                ncol = 0
+                
             else:
                 raise Exception('Unknown platform')
 
+            # FIFTH CONVERSTION
+            with open(fname,'rb') as fp:
+                oldobj = pickle.load(fp)
+            oldparams, olddesvar, oldcons, oldobj, oldopt = oldobj
+
+            newparams = myobj.params
+            newparams['number_of_offset_columns'] = ncol
+            for k in oldparams.keys():
+                if k in newparams:
+                    newparams[k] = oldparams[k]
+                    
+            with open(fname,'wb') as fp:
+                pickle.dump((newparams, olddesvar, oldcons, oldobj, oldopt), fp)
+                    
+                    
+            '''
+            # FOURTH CONVERSION
+            with open(fname,'rb') as fp:
+                oldobj = pickle.load(fp)
+            oldparams, olddesvar, oldcons, oldobj, oldopt = oldobj
+
+            newparams = {}
+            newparams['max_draft'] = max_draft
+            for k in oldparams.keys():
+                newkey = k
+                newval = oldparams[k]
+                if k == 'fairlead':
+                    newkey = 'fairlead_location'
+                    if oldparams['number_of_offset_columns'] > 0:
+                        freeboard = oldparams['offset_freeboard']
+                        h_section = oldparams['offset_section_height']
+                    else:
+                        freeboard = oldparams['main_freeboard']
+                        h_section = oldparams['main_section_height']
+                    z_nodes = np.flipud( freeboard - np.r_[0.0, np.cumsum(np.flipud(h_section))] )
+                    newval = ((-newval) - z_nodes[0]) / (z_nodes[-1] - z_nodes[0])
+
+                newparams[newkey] = newval
+                
+            newdesvar = []
+            newcons = []
+            for k in olddesvar:
+                iadd = k[:]
+                if k[0] == 'fairlead':
+                    iadd = ['fairlead_location',0.0,1.0]
+                newdesvar.append(iadd)
+
+            for k in oldcons:
+                if k[0].find('fairlead') >= 0: continue
+                iadd = k[:]
+                if k[0].find('draft_depth_ratio') >= 0:
+                    ilab = k[0].replace('depth_ratio','margin')
+                    iadd = [ilab,0.0,1.0,None]
+                newcons.append(iadd)
+            
+            with open(fname,'wb') as fp:
+                pickle.dump((newparams, newdesvar, newcons, oldobj, oldopt), fp)
+            
+
+            # THIRD CONVERSION
+            with open(fname,'rb') as fp:
+                oldobj = pickle.load(fp)
+            oldparams, olddesvar, oldcons, oldobj, oldopt = oldobj
+            newparams = {}
+            for k in oldparams.keys():
+                newkey = k.replace('ballast_heave_box','buoyancy_tank')
+                newparams[newkey] = oldparams[k]
+
+            newdesvar = []
+            for k in olddesvar:
+                iadd = k[:]
+                iadd[0] = k[0].replace('ballast_heave_box','buoyancy_tank')
+                newdesvar.append(iadd)
+
+            with open(fname,'wb') as fp:
+                pickle.dump((newparams, newdesvar, oldcons, oldobj, oldopt), fp)
+                
             # SECOND CONVERSTION
             with open(fname,'rb') as fp:
                 oldobj = pickle.load(fp)
@@ -135,6 +219,7 @@ for plat in plats:
 
             with open(fname,'wb') as fp:
                 pickle.dump((newparams, newdesvar, newcons, newobj, oldopt), fp)
+            '''
 
             
             myobj.set_reference('10MW')
