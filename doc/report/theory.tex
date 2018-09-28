@@ -5,21 +5,27 @@
 The user must specify the metocean conditions that drive the wind and
 wave loads upon the floating substructure.  \textit{FloatingSE}
 currently only uses the single load case of maximum thrust coincident
-with maximum wave loading to drive the substructure design. Ideally,
-multiple DLCs and metocean conditions would be used for design
-optimization.  The capability to optimize over multiple DLCs will be
-added to future versions of the model.
+with maximum wave loading to drive the substructure design. The
+assumption is that this load case would be the driver for substructure
+sizing and stability.  Ideally, multiple DLCs and metocean conditions
+would be used for design optimization.  The capability to optimize over
+multiple DLCs will be added to future versions of the model.  By not
+currently including a formal set of IEC DLCs, the conceptual designs
+derived in this work should be considered preliminary and subject to
+extensive revision once other load cases, and higher-fidelity analysis,
+is brought to bear.
 
 \section{Load Path}
 As with other WISDEM models, the primary simplification in
 \textit{FloatingSE} is the treatment of all loads as pseudo-static. This
-approximation reduces computational time and resources, since an
-accurate calculation of dynamic loads requires more sophisticated
-numerical tools and simulations.  Thus, users must exercise care in
-selecting loads and safety factors to compensate for the lack of a fully
-dynamic treatment \citep{damiani2016}.  Furthermore, fatigue effects and
-structural lifetime estimates are also excluded for now, but could be
-incorporated in future developments.
+approximation significantly reduces computational time and resources,
+since an accurate calculation of dynamic loads requires more
+sophisticated numerical tools and simulations.  However, dynamic effects
+can still dominate drive component sizing for floating platforms, thus
+the static loading assumption gives a rough approximation of the total
+loading.  Furthermore, fatigue effects and structural lifetime estimates
+are also excluded for now, but could be incorporated in future
+developments.
 
 A floating wind turbine undergoes loading from a number of sources.  The
 primary loading source for the tower comes from the aerodynamic loads
@@ -37,10 +43,10 @@ substructure that extends above the waterline.  They are not applied to
 connecting truss members that may be part of the substructure geometry.
 These drag loads are computed assuming the tower and columns are smooth
 circular cross-sections and that the drag coefficient can be selected as
-a function of the flow Reynolds number \citep{Roshko}.  The drag force
-is a function height, since the wind profile and cross-sectional geometry varies
-along that dimension.  For the wind profile, the standard power-law
-scaling is used,
+a function of the flow Reynolds number \citep{Roshko}.  The aerodynamic
+drag force is a function of height, since the wind profile and
+cross-sectional geometry varies along that dimension.  For the wind
+profile, the standard power-law scaling is used,
 \begin{equation}
   U_a(z) = U_{ref}\left(\frac{z}{z_{ref}}\right)^{\alpha}\quad,
 \end{equation}
@@ -100,7 +106,7 @@ are also accelerating at different rates,
 For
 simplicity, \textit{FloatingSE} only considers the maximum velocity and
 acceleration at a given height, and makes a conservative assumption that
-they occur concurrently in time and space.  This essentially means ignoring the
+they are concurrent in time and space.  This essentially means ignoring the
 $\kappa x - \omega t$ term, since the maximum of any hyperbolic sine or cosine
 term is one.
 
@@ -388,7 +394,7 @@ center of buoyancy away from alignment with the center of mass.  This is
 a standard calculation in naval architecture \citep{thiagarajan2014} and is
 diagrammed in Figure \ref{fig:metacenter}.  In this diagram, the center
 of mass is denoted, $G$, the center of buoyancy is $B$, and the
-metacenter is $M$.  In neural conditions (Figure \ref{fig:metacenter}a),
+metacenter is $M$.  In neutral conditions (Figure \ref{fig:metacenter}a),
 all of these points are vertically aligned.
 
 As the structure lists or heels, the center of buoyancy shifts toward
@@ -515,7 +521,7 @@ tools.  One of these, Task 30: Offshore Code Comparison Collaboration
 (OC3), shared a spar design among many participants to compare
 performance as modeled by differed tool sets.  A description of the OC3
 spar is provided in \citet{OC3}.  Since it is already a
-well-studied geometry, this design was selected as the focus of
+well-studied geometry, the OC3 spar design was selected as the focus of
 verification for \textit{FloatingSE}.  As part of the Task 30 effort,
 an ANSYS model of the OC3 spar, using shell elements combined with
 stiffeners and bulkheads, was also generated.  This was taken as
@@ -534,14 +540,14 @@ calculated by \textit{FloatingSE}, was compared to the ANSYS model.  The
 exactly over the top half of the spar, but deviates by approximately
 5--10\% towards the bottom half of the spar.  In the bottom half of the
 spar, \textit{FloatingSE} actually over-predicts the stress, a more
-conservative estimate, which is the preferable approach in a
+conservative estimate, which is the preferable result from a
 low-fidelity cost and sizing model.  At this time, more complicated
 loading cases, with wind and wave loading included, have not been
 performed.
 
 The rigid body modes predicted by \textit{FloatingSE} were compared
-against a FAST model of the OC3 spar.  FAST was used as the truth
-solution in this case because it more accurately handles mooring
+against a FAST model of the OC3 spar.  FAST was used as the benchmark
+for the calculation of dynamic modes because it more accurately handles mooring
 dynamics than the ANSYS structural model and more accurately captures
 hydrodynamic phenomenon.  The errors in the surge, sway, roll, and pitch
 frequencies are 11-12\%.  \textit{FloatingSE} actually estimates the

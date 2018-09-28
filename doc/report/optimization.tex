@@ -76,7 +76,7 @@ turbine design was needed as a starting point by which the conceptual
 design and sensitivity studies could build upon.  The Danish Technical
 University (DTU) \unit[10]{MW} reference design was chosen as the static
 turbine to be used throughout this analysis.  This selection was made
-because \unit[10]{MW} is commensurate with the most current offshore
+because \unit[10]{MW} is representative of the most current offshore
 turbine designs being installed (with fixed-bottom supports) by
 developers.  Additionally, other research efforts, such as the LIFES50+
 program, have already designed floating substructures for this turbine.
@@ -174,7 +174,7 @@ a non-dominating sorting genetic algorithm that solves non-convex and
 non-smooth single and multiobjective optimization problems. The
 algorithm attempts to perform global optimization, while enforcing
 constraints, using a tournament selection-based strategy where the best
-solutions are placed into a mating pool.  The local modifications of the
+solutions are placed into a mating pool.  The in-house modifications of the
 NSGA-II algorithm include parallelization via multi-threading for faster
 execution, the use of penalties for constraint handling (described
 below), and the handling of integer-based design variables for a fully
@@ -195,7 +195,7 @@ values from the lower bound to the upper bound.  Thus, this was truly a
 probability of crossover during the optimization was set to 0.9 and the
 probably of mutation was 0.4.  Both of these values are considered high,
 in the context of genetic algorithm scientific literature, but again
-enabled a broard and fluid search of the tradespace.
+enabled a broad and fluid search of the tradespace.
 
 By design, the NSGA-II algorithm is well-suited to global optimization
 by traversing a broad span and combination of design variable values.
@@ -215,7 +215,7 @@ behavior.  The vertices of the simplex, the test points, are then
 reflected, expanded, or contracted to move towards the optimal point.
 The process terminates when the simplex becomes sufficiently small or
 the test points have nearly identical performance.  As with the genetic
-algorithm, a local implementation of the Nelder-Mead algorithm was used
+algorithm, an in-house implementation of the Nelder-Mead algorithm was used
 to enable multi-threading and constraint handling via the chosen penalty
 method.  To focus the algorithm purely on local optimization, and not
 global exploration of other possible floating substructure
@@ -248,7 +248,7 @@ Derivative-free optimization algorithms were chosen for a few reasons,
 despite their known performance drawbacks in terms of wall-clock time.
 First, to do a complete configuration optimization of the substructure,
 a mixed-integer capable algorithm is required.  No gradient-based
-optimziation algorithm is capable of handling these types of variables
+optimization algorithm is capable of handling these types of variables
 directly (unless a rounding approximation is used).  This was the
 primary reason for the selection of a genetic algorithm for the global
 design space search and optimization step.
@@ -281,8 +281,8 @@ function value of each solution.  \citet{yeniay05} provides a nice
 summary of the use of penalty methods in genetic algorithms.  In our
 implementation, an \textit{adaptive} penalty approach is used where the
 scaling of the constraint violation summation is dependent on the value
-of the objective function of the best solution in the population.  With
-this approach, the problem formulation becomes,
+of the objective function of the best solution in the population at
+every iteration.  With this approach, the problem formulation becomes,
 \begin{equation}
 \begin{array}{ll}
   \min & \Phi(\mbf{x}) = f\left(\mbf{x}\right) + p\left(\mbf{x}\right)\\
@@ -292,7 +292,7 @@ this approach, the problem formulation becomes,
 where $\Phi(\mbf{x})$ is the new objective function and $p(\mbf{x})$ is
 the penalty function.  This function is configured as a summation of
 constraint violations only (constraints that are satisfied add zero to the summation),
-\begin{equation}
+\begin{equation} \label{eqn:penalty}
 p\left(\mbf{x}\right) = \lambda \sum_i^m \max\left[0,g_i
   \left(\mbf{x}\right)\right];
 \qquad \lambda = 10^{\text{floor} \left( \log_{10} \min\left[f\left(x_1\right)
@@ -300,7 +300,7 @@ p\left(\mbf{x}\right) = \lambda \sum_i^m \max\left[0,g_i
 \end{equation}
 and $\lambda$ is the adaptive scaling parameter, which is essentially
 set to the next order of magnitude above that of the objective function
-for the best performing solution in the population.
+for the best performing solution in every iteration/generation.
 
 A penalty approach is used in our application of conceptual design of a
 floating offshore wind energy system because its advantages outweigh its
@@ -322,6 +322,14 @@ mended during the detailed design phase.  Furthermore, the low-fidelity
 representation of the physics likely fails to capture all of the nuances
 involved in the constraint evaluation, so promising designs should not
 be discarded until fully vetted by higher-fidelity models.
+
+It should be noted that the penalty approach described weights all
+constraint violations equally.  Meaning, all constraint violations are
+summed together into $p(x)$ when in truth some violations are softer or
+harder than others.  A modified approach would be to have a different
+scaling for each constraint function, so $\lambda$ would become
+$\lambda_i$ and move inside the summation in Equation \ref{eqn:penalty}.
+This has been considered for this work, but not yet enforced.
 
 \subsection{Design Variables}
 In WISDEM, via OpenMDAO, any input parameter can be designated a design

@@ -19,30 +19,38 @@ It should be noted that the arrival at \textit{optimized} designs here,
 means strictly optimized in the convergence of the optimization
 algorithm around the WISDEM model of a floating offshore turbine.  It is
 not an optimized design in that it would outperform other designs or be
-considered ready for manufacturing.  It is merely optimized for the set
-of assumptions, load cases, and physics models used by WISDEM.  Given
-the description of \textit{FloatingSE} in this paper, these assumptions
-and modeling limitations are numerous and include,
+considered ready for manufacturing in its present state.  It is merely
+optimized for the set of assumptions, load cases, and physics models
+currently used by WISDEM.  Given the description of \textit{FloatingSE}
+in this paper, these assumptions and modeling limitations are numerous
+and include,
 \begin{itemize}
-\item Hydrostatic loading only, no hydrodynamic loads, effects, or
-  considerations (except for eigenmodes).  Therefore, design features
-  meant to handle or minimize dynamic loading are not present;
-\item Single load case only, the maximum thrust condition.  Design
-  features for other DLCs, such as mooring line snap, are not present;
-\item Static load analysis only (except for eigenmodes);
-\item Simple beam-based finite element structural analysis.  Because of
-  this, and other assumptions in the structural analysis, connecting
-  pontoons appear much larger than they would otherwise have to be;
-\item Quasi-static mooring analysis;
-\item Simplified capital cost modeling, frequently based on mass
-  scaling.  Costs of highly tapered columns, joints, complicated welding
-  connections are not included, so these features are sometimes included
-  by the optimizer;
-\item Modeling of substructure capital costs only, no manufacturing,
-  assembly, installation, operations, or maintenance costs captured.
+\item The consideration of hydrostatic loading only, and ignoring
+  hydrodynamic loads or effects (except for eigenmodes).  Therefore,
+  design features meant to handle or minimize dynamic loading are not
+  present;
+\item Design around a single load case only, the maximum thrust
+  condition.  Therefore, design features for other DLCs, such as mooring
+  line snap, are not considered yet even though they may still be
+  important for component sizing;
+\item The use of a simple beam-based finite element structural analysis,
+  which condenses all columns and pontoons into quasi 1-D beam elements.
+  Aside from imprecise stress and buckling estimates, this also results in
+  connecting pontoons being much larger than they would otherwise have to
+  be;
+\item The mooring analysis is also quasi-static, so actual restoring
+  forces and stiffness are approximate;
+\item A simplified capital cost modeling was used, which was frequently
+  based on mass scaling.  Costs of highly tapered columns, joints,
+  complicated welding connections are not included, yet these features
+  are sometimes introduced by the optimizer;
+\item Modeling only included substructure capital costs; no manufacturing,
+  assembly, installation, operations, or maintenance costs were captured.
   This means that the TLP looks like the lowest cost option for now,
-  but that answer could change when other costs are considered;
-\item Incomplete incorporation of existing codes, standards, and best
+  but that answer could change when other costs are considered.  Also
+  break-even cost points are subject to change after these other costs
+  are considered;
+\item The incomplete incorporation of existing codes, standards, and best
   practices.
 \end{itemize}
 
@@ -68,7 +76,8 @@ in red.
     \begin{tabular}{l|cc|cc|cc}
       \hline
        & \multicolumn{2}{c|}{\textbf{Spar}} & \multicolumn{2}{c|}{\textbf{Semi}} & \multicolumn{2}{c}{\textbf{TLP}}\\
-      Objective function & Mass & Cost & Mass & Cost & Mass & Cost\\ \hline \hline
+      \textit{Objective function} & \textit{Mass} & \textit{Cost} & \textit{Mass} & \textit{Cost} & \textit{Mass} & \textit{Cost}\\
+      \hline \hline
 Substructure mass [1000t] & 10.2 & 15.0 & 16.1 & 16.8 & 4.2 & 6.2\\
 Substructure cost [M USD] & 21692.8 & 18028.0 & 18038.1 & 18100.4 & 3342.5 & 2687.5\\
 Substructure displacement [k$m^3$] & 18.6 & 17.2 & 21.5 & 21.6 & 8.2 & 7.9\\
@@ -375,7 +384,7 @@ study.  This is an important trend to keep in mind when interpreting the
 change in substructure costs presented below.
 
 
-\subsection{Mass vs.~Cost Scaling}
+\subsection{Cost Reduction in Mass-Optimized Designs}
 
 \begin{figure}[htbp]
   \begin{subfigure}[b]{0.49\linewidth}
@@ -395,30 +404,30 @@ The change in substructure cost, including the mooring system, for the
 mass-optimized designs in the sensitivity study is shown in Figure
 \ref{fig:mass-cost} in both absolute and percentage terms.  The results
 are, at first, quite surprising, but are consistent with the other
-results shown above.  The mass-optimized spar design demonstrates a
-mass reduction slope of $1.5--2$ relative to nacelle mass reduction,
-which is a reflection of decreases in the spar diameter, thickness, and
-permanent ballast.  This leads to a net cost savings of approximately
-\$150M for a 50\% reduction in nacelle mass, which is less than 1\% of
-the total cost and far from the 4\% reduction in substructure mass.  The
-mass-optimized TLP design shows negligible cost savings for all nacelle
-mass perturbations, despite a consistent mass reduction slope of $1$.
-The mass-optimized semisubmersible design has a small margin for overall
-mass reduction since it is tightly constrained, but nevertheless does
-achieve measurable reductions over the course of the parameterization.
-However, Figure \ref{fig:mass-cost} shows that this mass reduction
-actually incurs a cost increase.  This is inconsistent with
-expectations, but can be understood through the results in Figure
-\ref{fig:mass-other}d and Table \ref{tbl:factors}.  To reduce the mass,
-the optimizer has aggressively reduced the amount of permanent ballast
-in favor of water ballast.  To maintain stability despite this change,
-the column diameter and draft (which was not shown) actually increased
-slightly.  While permanent ballast is heavy, it is also inexpensive per
-unit mass, whereas rolled steel columns are an order-of-magnitude more
-expensive.  Since the mass-optimized design is blind to cost, the
-algorithm traded a heavy but cheap ingredient for a lighter but more
-expensive ingredient.  This explains the ostensibly counter-intuitive
-trends seen in Figure \ref{fig:mass-cost}.
+results shown above.  The mass-optimized spar design demonstrates a mass
+reduction slope of $1.5--2$ relative to nacelle mass reduction, which is
+a reflection of decreases in the spar diameter, thickness, and permanent
+ballast.  This leads to a net cost savings of approximately \$150M (in
+the substructure) for a 50\% reduction in nacelle mass, which is less
+than 1\% of the total cost and far from the 4\% reduction in
+substructure mass.  The mass-optimized TLP design shows negligible cost
+savings for all nacelle mass perturbations, despite a consistent mass
+reduction slope of $1$.  The mass-optimized semisubmersible design has a
+small margin for overall mass reduction since it is tightly constrained,
+but nevertheless does achieve measurable reductions over the course of
+the parameterization.  However, Figure \ref{fig:mass-cost} shows that
+this mass reduction actually incurs a cost increase.  This is
+inconsistent with expectations, but can be understood through the
+results in Figure \ref{fig:mass-other}d and Table \ref{tbl:factors}.  To
+reduce the mass, the optimizer has aggressively reduced the amount of
+permanent ballast in favor of water ballast.  To maintain stability
+despite this change, the column diameter and draft (which was not shown)
+actually increased slightly.  While permanent ballast is heavy, it is
+also inexpensive per unit mass, whereas rolled steel columns are an
+order-of-magnitude more expensive.  Since the mass-optimized design is
+blind to cost, the algorithm traded a heavy but cheap ingredient for a
+lighter but more expensive ingredient.  This explains the ostensibly
+counter-intuitive trends seen in Figure \ref{fig:mass-cost}.
 
 \subsection{Cost-Optimized Design Sensitivity}
 For a consistent reduction in both substructure mass and cost with
@@ -530,4 +539,3 @@ value is only about \unit[100]{USD/kg}, a difficult threshold to meet.
 Thus, the break-even cost point is dependent on the type of substructure
 for this application, hypothetical drivetrain improvement technologies,
 and likely other technologies too.
-

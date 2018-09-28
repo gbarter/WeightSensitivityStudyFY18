@@ -14,25 +14,29 @@ Wind Energy Technologies Office.
 This work introduces \textit{FloatingSE}, the floating offshore wind
 turbine substructure cost, sizing, and analysis module in the Wind-Plant
 Integrated System Design \& Engineering Model (WISDEM) framework.  The
-tool generalizes its geometry parameterization so as to use the same set
-of variables to describe spars, semisubmersibles, tension leg platforms
+tool generalizes its geometry parameterization enabling the same set of
+variables to describe spars, semisubmersibles, tension leg platforms
 (TLPs), and hybrids of those archetypes.  Design evaluation is done by
 the application of existing codes and standards, hydrostatic principals,
 and simple beam finite element static structural analysis.  With other
 multidisciplinary WISDEM modules, the inclusion of \textit{FloatingSE}
-enables the vertical simulation of a floating offshore wind turbine,
-even a whole plant if desired.  To showcase this capability, a two-step
-optimized-based analysis was carried out.  First, three different
-substructures, a spar, semisubmersible, and TLP, were designed beneath a
-\unit[10]{MW} reference turbine. Second, a design sensitivity study was
-conducted where mass in the nacelle was parametrically removed, to
-simulate the addition of a novel drivetrain or generator technology, and
-the design re-optimized.  The derived sensitivities were used to
-ascertain the break-even cost rate of the new technology that reduces
-the drivetrain mass, but at a cost premium (\$1,000 for the spar, \$450
-for the semisubmersible, and \$100 for the TLP).  Another noteworthy
-observation is that mass is poor surrogate for cost in optimization
-studies, a convention frequently used in conceptual design studies.  Due
-to the many simplifying assumptions and low-fidelity analysis, the
-optimized design and sensitivity values come with many caveats and are
-subject to change following future development.
+enables the holistic simulation of a floating offshore wind turbine.  To
+showcase this capability, a two-step analysis is presented.  First,
+three different substructures, a spar, semisubmersible, and TLP, were
+designed via optimization with design variables and constraints to
+support a \unit[10]{MW} reference turbine. Second, a design sensitivity
+study was conducted where mass in the nacelle was parametrically
+removed, to simulate the weight reduction that may be achieved from some
+novel drivetrain or generator technologies, and the design re-optimized
+to ascertain the corresponding reduction in mass and cost in the
+substructure.  Based on these sensitivities for drivetrain mass, we
+computed an incremental cost premium for the more expensive, but
+lighter-weight technology.  Up to \$1,000/kg for the spar, \$450/kg for
+the semisubmersible, and \$100/kg for the TLP could be incurred and
+result in a levelized cost that is equal to or less than the reference
+design.  Another noteworthy observation is that mass is poor surrogate
+for cost in optimization studies, if applied blindly, a convention
+frequently used in conceptual design studies.  Due to the many
+simplifying assumptions and low-fidelity analysis, the optimized design
+and sensitivity values come with many caveats and are subject to change
+following future development.

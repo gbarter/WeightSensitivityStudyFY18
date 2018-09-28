@@ -32,15 +32,12 @@ quayside, and towed out.
 
 Preliminary analysis suggests that, in time, floating technology has the
 potential to achieve a lower cost of energy than their fixed-bottom
-counterparts \citep{spatial}.  In fact, the Statoil Hywind floating plant
-recorded a higher capacity factor in its first few months of operation
-than its fixed-bottom brethren \citep{statoil-hywind}.  However, as a
-nascent technology, the cost of floating offshore wind energy is still
-high today.  Detailed modeling shows that the needed long-term cost
-reductions are not likely to come from a single breakthrough
-invention.  Instead, significant cost reductions will come from a
-disciplined combination of complementary innovations, or a technology
-cost reduction \textit{pathway}.
+counterparts \citep{spatial}.  However, as a nascent technology, the
+cost of floating offshore wind energy is still high today.  Detailed
+modeling shows that the needed long-term cost reductions are not likely
+to come from a single breakthrough invention.  Instead, significant cost
+reductions will come from a disciplined combination of complementary
+innovations, or a technology cost reduction \textit{pathway}.
 
 To produce transformational cost reductions, multiple advancements are
 needed over the entire system: the turbine, tower, floating platform,
@@ -48,26 +45,30 @@ moorings, anchors, construction, and logistics.  However, the
 complexities of the physics, manufacturing, installation, and operation
 of floating wind turbines require a fully integrated systems engineering
 and techno-economic design approach to achieve these transformational
-cost reductions.   The paper outlines an initial, low-fidelity
-step towards realizing this vision and an example analysis.
+cost reductions.  The paper outlines an initial, low-fidelity step
+towards realizing this vision and an example analysis using this design
+approach.  Due to the low-fidelity nature of the analysis, these results
+should be considered preliminary, with more work needed to realize the
+full benefit of an integrated systems engineering framework.  As such,
+the purpose of this paper is to illustrate the methodology and the tools
+needed to carry out these optimization strategies
 
 \section{Multidisciplinary Analysis and Optimization (MDAO)}
-A systems engineering framework advocates for an
-\textit{integrated} approach to design, where all disciplines, costs,
-performance measures, and constraints are considered concurrently.
-Essentially, an analysis framework for wind plants must capture the
-entire power path, from the aerodynamics to the generator and grid; the
-entire load path, from the nacelle through the tower and foundation; and
-the entire balance sheet, from concept through decommissioning.
-Executing this proposed approach in a closed-loop optimization framework
-is critical to achieve superior cost and performance gains.
-A graphical depiction of this idea is shown in Figure
-\ref{fig:mdao}.
+A systems engineering framework advocates for an \textit{integrated}
+approach to design, where all disciplines, costs, performance measures,
+and constraints are considered concurrently.  Essentially, an analysis
+framework for wind plants must capture the entire power path, from the
+aerodynamics to the generator and grid; the entire load path, from the
+nacelle through the support structure and mooring system; and the entire
+balance sheet, from concept through decommissioning.  Executing this
+proposed approach in a closed-loop optimization framework is critical to
+achieve superior cost and performance gains.  A graphical depiction of
+this idea is shown in Figure \ref{fig:mdao}.
 
 \begin{figure}[htbp]
   \begin{center}
-    \includegraphics[width=2.5in]{mdao}
-  \caption{``Integrated'' multidisciplinary design analysis and optimization
+    \includegraphics[width=2.75in]{mdao}
+  \caption{\textit{Integrated} multidisciplinary design analysis and optimization
     (MDAO) approach.}
   \label{fig:mdao}
   \end{center}
@@ -75,7 +76,8 @@ A graphical depiction of this idea is shown in Figure
 
 Multidisciplinary analysis and optimization (MDAO) would be beneficial
 for all wind turbine systems, but perhaps even more so for floating
-offshore systems due to their lower level of maturity, compliant nature
+offshore systems due to their lower level of maturity, more complicated
+physical environment (aero-hydro-elastic loading), compliant nature
 (motion in all six degrees of freedom), and tight inter-dependencies
 among their subsystems. The stiffness and damping of the structural
 members in the load path can impact the power production of the
@@ -113,10 +115,10 @@ developing a research-focused systems engineering framework, with
 emphasis on the rotor.  This work used multiple inner optimizations
 instead of one global optimization and culminated in an excellent
 summary paper by \citet{bortolotti2016}.  By most accounts, future
-interest in MDAO will persist, both within the academic and industrial
-wind energy community.  In fact, the number of contributors and papers
-has grown so large that it was not possible to properly cite all the
-interesting works in this report.
+interest in MDAO will continue to proliferate, both within the academic
+and industrial wind energy community.  In fact, the number of
+contributors and papers has grown so large that it was not possible to
+properly cite all the interesting works in this report.
 
 The International Energy Agency (IEA) has also recognized the need for
 systems engineering tools. A research task has recently been initiated
@@ -155,8 +157,9 @@ tool to incorporate both environmental and lifetime cost considerations
 to determine the most appropriate support structure for an offshore wind
 site. \citet{karimi2017} used a genetic algorithm to mix and match
 geometry components to create optimal hybrid substructures.  This is the
-work that most closely resembles the analysis presented in this paper,
-with some differences, of course.
+work that most closely resembles the analysis presented and the
+methodology proposed in this paper, with some differences in the
+details, of course.
 
 \section{Role of Experience in MDAO for Floating Offshore Wind Energy}
 One common misconception with MDAO is that the design framework and
@@ -173,18 +176,18 @@ constraints.  Most of the floating wind prototype designs would probably
 meet a basic set of certification requirements, even though
 internationally recognized standards are still in development.  However,
 even a fully mature certification process would serve mainly to reduce
-deployment risk, not drive innovation or push the technology towards
-lower-cost designs.  This is the motivation for the second step in
-Figure \ref{fig:tradespace}, which arrives at a smaller region of the
-tradespace that encompasses the designs with the potential to be
-cost-competitive.  Concepts in this space satisfy a rubric of criteria
-focused on lowering cost learned via experience.  Meaning, the
-real-world lessons gained from floating turbine prototypes and tank
-tests are also imbued into the design framework.  Experience manifests
-itself in the underlying architecture of the design framework, its
-parameterization of the geometry, the constraints, design variables, and
-other options available to the user.  Without this experience, the
-optimized designs that come out of the framework would likely fall to
+deployment and operational risk, not drive innovation or push the
+technology towards lower-cost designs.  This is the motivation for the
+second step in Figure \ref{fig:tradespace}, which arrives at a smaller
+(blue) region of the tradespace that encompasses the designs with the
+potential to be cost-competitive.  Concepts in this space satisfy a
+rubric of criteria focused on lowering cost learned via experience.
+Meaning, the real-world lessons gained from floating turbine prototypes
+and tank tests are also imbued into the design framework.  Experience
+manifests itself in the underlying architecture of the design framework,
+its parameterization of the geometry, the constraints, design variables,
+and other options available to the user.  Without this experience, the
+optimized designs that come out of the framework would likely fail to
 gain credibility among the offshore wind community.  Once the tradespace
 is sufficiently narrowed by standards and experience, then the
 optimization is used to maximize performance This allows the engineers
@@ -207,8 +210,8 @@ Design and Engineering Model (WISDEM), developed by NREL, is a set of
 integrated modules that creates a virtual, vertically integrated wind
 plant. The models use engineering principles for conceptual design and
 preliminary analysis, and link to financial modules for LCOE
-estimation. The modules can be thought of as templates, in that they can
-be easily tweaked for any analysis question by considering any variable
+estimation. The modules can be thought of as templates that can
+be easily tweaked to answer a wide variety of analysis questions by considering any variable
 a design variable and any output an optimization objective or
 constraint. The WISDEM modules are built around the OpenMDAO library \citep{openmdao},
 allowing for the modules to be exercised individually for component
@@ -234,7 +237,7 @@ new modules added in course of this project is shown in Figure
 and components involved, except most notably the floating substructures.
 At the plant level, the balance of station economics for floating wind
 systems from concept through decommissioning was incorporated in WISDEM
-from other another in-house NREL model.  No current open-source offshore
+from other another internal NREL model.  No current open-source offshore
 operations and maintenance module suitable for use in WISDEM is
 currently available, but development of one is part of future plans.
 
@@ -247,7 +250,7 @@ of loads, stress analysis, mooring system behavior, stability criterion,
 and compliance with existing codes and standards.  A flow chart of the
 key analysis steps and tools is shown in Figure \ref{fig:floatingse}.
 \textit{FloatingSE} is made available to the broader community via
-GitHub as an open-source mode.
+GitHub (https://github.com/WISDEM/FloatingSE) as an open-source model.
 
 \begin{figure}[htbp]
   \begin{center}
@@ -257,35 +260,35 @@ GitHub as an open-source mode.
   \end{center}
 \end{figure}
 
-The next two sections of the paper present the details of
-\textit{FloatingSE}.  Section \ref{sec:geom} describes the geometry
+The next two chapters of the paper present the details of
+\textit{FloatingSE}.  Chapter \ref{sec:geom} describes the geometry
 parameterization in a general manner to enable conceptual design
-exploration of both classical and novel configurations.  Section
+exploration of both classical and novel configurations.  Chapter
 \ref{sec:theory} then describes how a design configuration is evaluated
 in \textit{FloatingSE}, through the analysis flow shown in Figure
 \ref{fig:floatingse}.
 
 \section{Analysis Overview}
 The final two sections of the paper feature an optimization-based design
-and sensivitiy study meant to showcase the capabilities of
+and sensitivity study meant to showcase the capabilities of
 \textit{FloatingSE} within the WISDEM framework.  The application
 features the conceptual design of three classical floating substructures
 with \textit{FloatingSE}, guided only by design variable bounds and
 constraints.  After showcasing the designs, a sensitivity study is
-conducted where the mass of the nacelle is parameterically changed, and
+conducted where the mass of the nacelle is parametrically changed, and
 the substructure designs re-optimized.  The optimization problem
 formulation and solution methodology for the design and sensitivity
-studies is described in Section \ref{sec:opt}.  The results of the
+studies is described in Chapter \ref{sec:opt}.  The results of the
 studies, both the conceptual designs of floating turbine substructures
-and the sensitivity study, is presented in Section \ref{sec:results}.
+and the sensitivity study, is presented in Chapter \ref{sec:results}.
 
-The analysis presented here helps to quantify
-the value of weight reduction in floating offshore wind turbines.
-Weight minimization, and a cost premium, is a classic cost-benefit
-tradeoff study that is especially germane to floating offshore wind
-energy systems.  Parameterically changing the weight of the nacelle is a
-surrogate for new drivetrain and generator technologies or innovations
-that offer to reduce the weight of these components at a cost premium.
+The analysis presented here helps to quantify the value of weight
+reduction in floating offshore wind turbines.  Weight minimization, and
+a cost premium, is a classic cost-benefit tradeoff study that is
+especially germane to floating offshore wind energy systems.
+Parameterically changing the mass of the nacelle is a simplified method
+for estimating the system-level mass and cost impacts of new drivetrain
+and generator technologies that offer lower mass at a cost premium.
 Without a full systems framework, it is difficult for the engineer to
 make such a tradeoff.  Thus, the study here teases some of the types of
 questions that could be posed and answered with the WISDEM framework to

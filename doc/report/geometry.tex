@@ -3,7 +3,7 @@
 This section describes the variables and methods used to parameterize
 the substructure geometry in \textit{FloatingSE}.  Typically,
 substructure designs have fallen into three classical regimes, which are
-shown in Figure \ref{fig:archetype}, each of which attains stability
+shown in Figure \ref{fig:archetype}, each of which attains static stability
 through different physical mechanisms.  A spar derives its stability from a
 deep drafted ballast.  A semisubmersible derives its stability from
 distributed waterplane area, achieved with offset columns spread evenly
@@ -56,7 +56,7 @@ the buckling loads inherent in a submerged support structure.  The
 number of columns, their geometry, and the ring stiffeners are
 parameterized in the \textit{FloatingSE} module according to the
 diagrams in Figures \ref{fig:diagram} and \ref{fig:column}.  The main
-column is assumed to centered at $(x=0, y=0)$, directly underneath the
+column is assumed to be centered at $(x=0, y=0)$, directly underneath the
 turbine tower (note that off-centered turbines are not yet supported).
 Other columns are referred to as \textit{offset} columns, and are
 assumed to be evenly spread around the main column.  The material of the
@@ -94,14 +94,14 @@ number of cans or sections used in the manufacturing of the real
 article.
 
 \subsection{Ballast}
-Substructure columns with long drafts can enhance stability by placing
-heavy ballast, such as magnetite iron ore, at their bottom sections.
-The user can specify the density of the permanent ballast added and the
-height of the ballast extent within the column.  Variable ballast, as
-opposed to permanent ballast, is water that is added or removed above
-the permanent ballast to achieve neutral buoyancy as the operating
-conditions of the turbine change.  A discussion of variable water
-balance in the model is found in Section \ref{sec:static}.
+Stability of substructure columns with long drafts can be enhanced by
+placing heavy ballast, such as magnetite iron ore, at their bottom
+sections.  The user can specify the density of the permanent ballast
+added and the height of the ballast extent within the column.  Variable
+ballast, as opposed to permanent ballast, is water that is added or
+removed above the permanent ballast to achieve neutral buoyancy as the
+operating conditions of the turbine change.  A discussion of variable
+water balance in the model is found in Section \ref{sec:static}.
 
 \subsection{Buoyancy Tanks (and Heave Plates)}
 Buoyancy tanks are modeled as a collar around the column and are not
@@ -143,9 +143,10 @@ via correlation, described in Section \ref{sec:theory}.  The mooring
 lines attach to the substructure at the \textit{fairlead} distance below
 the water plane, as shown in Figure \ref{fig:diagram}.  The lines can
 attach directly to a substructure column or at a some offset from the
-outer shell.  Note that bridle connections are not yet implemented.  The
-mooring lines attach to the sea floor at a variable distance, the anchor
-radius, from the substructure centerline, also set by the user.
+outer shell.  Note that bridle connections are not yet implemented in
+the model.  The mooring lines attach to the sea floor at a variable
+distance, the anchor radius, from the substructure centerline, also set
+by the user.
 
 By default, the mooring system is assumed to use a steel chain with drag
 embedment anchors. Other mooring available for selection are nylon,
@@ -185,7 +186,7 @@ cost rates and estimates should be considered notional.
         \hline \hline
         Bulkhead, stiffener & 1.0 && Ballast & \unit[100]{USD/kg} \\
         Column outfitting & 1.06 && Column outfitting & \unit[6,980]{USD/kg} \\
-        Tapered column & 1.05 & Tapered column & \unit[4,720]{USD/kg} \\
+        Tapered column & 1.05 && Tapered column & \unit[4,720]{USD/kg} \\
         Tower outfitting & 1.07 && Pontoons & \unit[6.5]{USD/kg} \\
         \hline
       \end{tabular}
