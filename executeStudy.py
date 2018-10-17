@@ -6,7 +6,7 @@ import sys
 from baselineSpar import mypromote
 
 
-fdefault = 'sub-nm.save'
+fdefault = 'sub-base.save'
 
 if __name__ == '__main__':
     # Determine which substructure we are using
@@ -33,23 +33,9 @@ if __name__ == '__main__':
     mysub.load(subsave)
     mysub.evaluate()
 
-    # Initialize optimization
-    mysub.set_optimizer('nm')
-    mysub.set_options({'penalty':True, 'restart':True, 'tol':1e-6, 'global_search':False})
-    mysub = mysetup(mysub, False)
-
     # Initialize containers
     m_rna_orig          = 672300.5303006992
     m_nacelle_orig      = 446036.25
-    m_substructure_pert = []
-    m_structure_pert    = []
-    m_water_pert        = []
-    V_displaced_pert    = []
-    lcoe_pert           = []
-    draft_pert          = []
-    spar_pert           = []
-    ballast_pert        = []
-    vballast_pert       = []
 
     # Determine which perturbation to run
     pert   = [1.1, 1.0, 0.9, 0.75, 0.667, 0.5]
@@ -69,7 +55,7 @@ if __name__ == '__main__':
 	#if p == 1.0: mysub.load(subsave)
         m = p * m_nacelle_orig
         pstr = str(p).replace('.','p')
-        fsave = fdefault if overrideName else subsave.replace('.save','_'+pstr+'.save').replace('soga','nm')
+        fsave = fdefault if overrideName else subsave.replace('.save','_'+pstr+'.save').replace('soga','subplex')
         frest = fsave.replace('save','restart')
 	if os.path.exists(fsave): mysub.load(fsave)
         if restartFlag and os.path.exists(frest):
@@ -78,37 +64,23 @@ if __name__ == '__main__':
 	    print 'RUNNING', str(p)
             mysub.params['rna_mass'] = m_rna_orig - (m_nacelle_orig - m)
             # Coarse
-            mysub.set_options({'generations':2000, 'nstall':300, 'adaptive_simplex':False})
+            mysub.set_optimizer('subplex')
+            mysub.set_options({'penalty':True, 'restart':False, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e3})
+            mysub.set_options({'generations':150, 'nstall':20, 'adaptive_simplex':False})
+            mysub = mysetup(mysub, False)
             mysub.run()
             mysub.save(fsave)
             move('heuristic.restart',frest)
             # Fine
-            mysub.load(fsave)
-            mysub.set_options({'generations':10000, 'nstall':600, 'adaptive_simplex':True})
-            mysub.run()
-            mysub.save(fsave)
-            move('heuristic.restart',frest)
+            #mysub.load(fsave)
+            #mysub.set_options({'generations':10000, 'nstall':600, 'adaptive_simplex':True})
+            #mysub.run()
+            #mysub.save(fsave)
+            #move('heuristic.restart',frest)
         mysub.load(fsave)
         mypromote(mysub, myturb)
         myturb.params['nac_mass'] = m
         myturb.save('turb-'+fsave)
         mysub.evaluate()
         myturb.evaluate()
-        m_structure_pert.append( myturb.prob['sm.load.structural_mass'] )
-        V_displaced_pert.append( myturb.prob['sm.subs.total_displacement'] )
-        lcoe_pert.append( myturb.prob['lcoe'] )
-        draft_pert.append( myturb.prob['sm.base.draft'] )
-        spar_pert.append( myturb.prob['sm.base.spar_mass'] )
-        ballast_pert.append( myturb.prob['sm.base.ballast_mass'] )
-        vballast_pert.append( myturb.prob['sm.subs.variable_ballast_mass'] )
-        if p==1.0:
-            m_structure_orig    = myturb.prob['sm.load.structural_mass']
-            V_displaced_orig    = myturb.prob['sm.subs.total_displacement']
-            lcoe_orig           = myturb.prob['lcoe']
-
-    d_rna          = np.array(mypert)*m_nacelle_orig - m_nacelle_orig
-    d_structure    = np.array( m_structure_pert ) - m_structure_orig
-    d_displaced    = np.array( V_displaced_pert ) - V_displaced_orig
-    d_lcoe         = np.array( lcoe_pert ) - lcoe_orig
-    print np.round(np.c_[d_rna, d_structure, d_displaced, d_lcoe])
 

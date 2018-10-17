@@ -6,6 +6,7 @@ from floatingse.instance.spar_instance import SparInstance
 from floatingse.instance.semi_instance import SemiInstance
 from wisdem.floating.turbine_spar_instance import TurbineSparInstance
 from wisdem.floating.turbine_semi_instance import TurbineSemiInstance
+from commonse.utilities import nodal2sectional
 import numpy as np
 
 plats = ('spar','semi','tlp')
@@ -41,6 +42,31 @@ for plat in plats:
             else:
                 raise Exception('Unknown platform')
 
+            # SIXTH CONVERSTION
+            with open(fname,'rb') as fp:
+                oldobj = pickle.load(fp)
+            oldparams, olddesvar, oldcons, oldobj, oldopt = oldobj
+
+            newparams = myobj.params
+            newparams['material_cost_rate'] = 1.1
+            newparams['outfitting_cost_rate'] = 1.5*1.1
+            newparams['labor_cost_rate'] = 1.0
+            newparams['painting_cost_rate'] = 14.4
+            for k in oldparams.keys():
+                if k in ['main_wall_thickness','offset_wall_thickness','tower_wall_thickness']:
+                    temp,_ = nodal2sectional(oldparams[k])
+                    newparams[k] = temp
+                elif k.find('cost_rate') >= 0:
+                    continue
+                elif k in newparams:
+                    newparams[k] = oldparams[k]
+                    
+            with open(fname,'wb') as fp:
+                pickle.dump((newparams, olddesvar, oldcons, oldobj, oldopt), fp)
+                    
+                    
+            '''
+
             # FIFTH CONVERSTION
             with open(fname,'rb') as fp:
                 oldobj = pickle.load(fp)
@@ -54,9 +80,7 @@ for plat in plats:
                     
             with open(fname,'wb') as fp:
                 pickle.dump((newparams, olddesvar, oldcons, oldobj, oldopt), fp)
-                    
-                    
-            '''
+
             # FOURTH CONVERSION
             with open(fname,'rb') as fp:
                 oldobj = pickle.load(fp)

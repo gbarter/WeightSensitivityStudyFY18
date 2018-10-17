@@ -14,7 +14,7 @@ def setobj(myobj):
     mycwd = os.getcwd()
     prefix = '' #if 'rna_cg' in myobj.params else 'sm.'
     if mycwd.lower().find('cost') >= 0:
-        myobj.add_objective(prefix+'total_cost', 1e-9)
+        myobj.add_objective(prefix+'total_cost', 1e-6)
     else:
         myobj.add_objective(prefix+'structural_mass', 1e-6)
     return myobj
@@ -33,9 +33,9 @@ def mysetup(myobj, discrete=True):
     myobj.add_design_variable('main_buoyancy_tank_diameter',0.0, 50.0)
     myobj.add_design_variable('main_buoyancy_tank_height',0.0, 20.0)
     myobj.add_design_variable('main_buoyancy_tank_location',0.0, 1.0)
-    #myobj.add_design_variable('tower_section_height',1e-1, 100.0)
-    #myobj.add_design_variable('tower_outer_diameter',1.1, 20.0)
-    #myobj.add_design_variable('tower_wall_thickness',1e-3, 5e-1)
+    myobj.add_design_variable('tower_section_height',1e-1, 100.0)
+    myobj.add_design_variable('tower_outer_diameter',1.1, 20.0)
+    myobj.add_design_variable('tower_wall_thickness',1e-3, 5e-1)
     myobj.add_design_variable('mooring_line_length', 2e2, 3e3)
     myobj.add_design_variable('anchor_radius', 1e2, 5e3)
     myobj.add_design_variable('mooring_diameter', 0.05, 2.0)

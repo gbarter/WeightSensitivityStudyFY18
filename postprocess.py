@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 import plotTools as pt
 from baselineSpar import mysub as myspar
 from baselineSemi import mysub as mysemi
-from baselineTLP0 import mysub as mytlp
+from baselineTLP import mysub as mytlp
 import cPickle as pickle        
 import csv
 
@@ -26,40 +26,40 @@ class MyMetric(object):
         elif type(probStr) == type(''):
             self.probCodes = [probStr]
 
-metrics = [MyMetric('mass', 'load.structural_mass', 'Substructure mass', '[1000t]', 1e-6),
-           MyMetric('volume', 'subs.total_displacement','Substructure displacement', '[k$m^3$]', 1e-3),
+metrics = [MyMetric('mass', 'substructure_mass', 'Substructure mass', '[1000t]', 1e-6),
+           MyMetric('volume', 'total_displacement','Substructure displacement', '[k$m^3$]', 1e-3),
            MyMetric('cost', 'total_cost', 'Substructure cost', '[M USD]', 1e-6),
-           MyMetric('mball_base', 'base.ballast_mass', 'Substructure main ballast mass', '[t]', 1e-3),
-           MyMetric('mball_aux', 'aux.ballast_mass','Substructure offset ballast mass', '[t]', 1e-3),
-           MyMetric('cball_base', 'base.ballast_cost','Substructure main ballast cost', '[M USD]',1e-6),
-           MyMetric('cball_aux', 'aux.ballast_cost','Substructure offset ballast cost', '[M USD]',1e-6),
-           MyMetric('mcol_base', 'base.total_mass','Substructure main col mass', '[1000t]',1e-6),
-           MyMetric('mcol_aux', 'aux.total_mass','Substructure offset col mass', '[1000t]',1e-6),
-           MyMetric('ccol_base', 'base.total_cost','Substructure main col costs', '[M USD]', 1e-6),
-           MyMetric('ccol_aux', 'aux.total_cost','Substructure offset col costs', '[M USD]', 1e-6),
-           MyMetric('water', 'subs.variable_ballast_mass','Substructure water ballast', '[1000t]',1e-6),
-           MyMetric('mpont', 'load.pontoon_mass','Substructure pontoon mass', '[1000t]',1e-6),
-           MyMetric('cpont', 'load.pontoon_cost','Substructure pontoon cost', '[M USD]',1e-6),
+           MyMetric('mball_main', 'main.ballast_mass', 'Substructure main ballast mass', '[t]', 1e-3),
+           MyMetric('mball_off', 'off.ballast_mass','Substructure offset ballast mass', '[t]', 1e-3),
+           MyMetric('cball_main', 'main.ballast_cost','Substructure main ballast cost', '[M USD]',1e-6),
+           MyMetric('cball_off', 'off.ballast_cost','Substructure offset ballast cost', '[M USD]',1e-6),
+           MyMetric('mcol_main', 'main.column_total_mass','Substructure main col mass', '[1000t]',1e-6),
+           MyMetric('mcol_off', 'off.column_total_mass','Substructure offset col mass', '[1000t]',1e-6),
+           MyMetric('ccol_main', 'main.column_total_cost','Substructure main col costs', '[M USD]', 1e-6),
+           MyMetric('ccol_off', 'off.column_total_cost','Substructure offset col costs', '[M USD]', 1e-6),
+           MyMetric('water', 'variable_ballast_mass','Substructure water ballast', '[1000t]',1e-6),
+           MyMetric('mpont', 'pontoon_mass','Substructure pontoon mass', '[1000t]',1e-6),
+           MyMetric('cpont', 'pontoon_cost','Substructure pontoon cost', '[M USD]',1e-6),
            MyMetric('cmoor', 'mooring_cost','Mooring cost', '[M USD]', 1e-6),
-           MyMetric('based', 'base.d_full','', '[m]',1.0,True),
-           MyMetric('basez', 'base.z_full','','[m]',1.0,True),
-           MyMetric('baset', 'base.t_full','','[m]',1.0,True),
-           MyMetric('auxd', 'aux.d_full','', '[m]',1.0,True),
-           MyMetric('auxz', 'aux.z_full','','[m]',1.0,True),
-           MyMetric('auxt', 'aux.t_full','','[m]',1.0,True),
-           MyMetric('basedraft', 'base.draft','Main column draft', '[m]',1.0),
-           MyMetric('auxdraft', 'aux.draft','Offset column draft', '[m]',1.0),
-           MyMetric('tension', 'mm.neutral_load','Mooring downward force', '[MN]',1e-6),
-           MyMetric('mball', ['base.ballast_mass','aux.ballast_mass'], 'Substructure column ballast mass', '[1000t]', 1e-6),
-           MyMetric('cball', ['base.ballast_cost','aux.ballast_cost'], 'Substructure column ballast cost', '[M USD]', 1e-6),
-           MyMetric('mcol',['base.total_mass','aux.total_mass'],
+           MyMetric('maind', 'main.d_full','', '[m]',1.0,True),
+           MyMetric('mainz', 'main.z_full','','[m]',1.0,True),
+           MyMetric('maint', 'main.t_full','','[m]',1.0,True),
+           MyMetric('offd', 'off.d_full','', '[m]',1.0,True),
+           MyMetric('offz', 'off.z_full','','[m]',1.0,True),
+           MyMetric('offt', 'off.t_full','','[m]',1.0,True),
+           MyMetric('maindraft', 'main.draft','Main column draft', '[m]',1.0),
+           MyMetric('offdraft', 'off.draft','Offset column draft', '[m]',1.0),
+           MyMetric('tension', 'mooring_neutral_load','Mooring downward force', '[MN]',1e-6),
+           MyMetric('mball', ['main.ballast_mass','off.ballast_mass'], 'Substructure column ballast mass', '[1000t]', 1e-6),
+           MyMetric('cball', ['main.ballast_cost','off.ballast_cost'], 'Substructure column ballast cost', '[M USD]', 1e-6),
+           MyMetric('mcol',['main.column_total_mass','off.column_total_mass'],
                     'Substructure column masses', '[1000t]',1e-6),
-           MyMetric('ccol',['base.total_cost','aux.total_cost'],
+           MyMetric('ccol',['main.column_total_cost','off.column_total_cost'],
                     'Substructure column costs', '[M USD]', 1e-6),
-           MyMetric('baseaved', [],'Main column ave diameter', '[m]',1.0),
-           MyMetric('auxaved', [],'Offset column ave diameter', '[m]',1.0),
-           MyMetric('baseavet', [],'Main column ave thickness', '[mm]',1e3),
-           MyMetric('auxavet', [],'Offset column ave thickness', '[mm]',1e3),
+           MyMetric('mainaved', [],'Main column ave diameter', '[m]',1.0),
+           MyMetric('offaved', [],'Offset column ave diameter', '[m]',1.0),
+           MyMetric('mainavet', [],'Main column ave thickness', '[mm]',1e3),
+           MyMetric('offavet', [],'Offset column ave thickness', '[mm]',1e3),
            MyMetric('csub', 'total_cost','Substructure cost w/o mooring', '[USV]',1e-9),
 ]
 metnames = [im.tag for im in metrics]
@@ -100,19 +100,19 @@ else:
             
             for k,p in enumerate(pert):
                 pstr = str(p).replace('.','p')
-                fname = platStr + '-nm_' + pstr + '.save'
+                fname = platStr + '-subplex_' + pstr + '.save'
                 if not os.path.exists(fname): continue
                 plat.load(fname)
                 plat.evaluate()
-                ncol = plat.prob['number_of_auxiliary_columns']
+                ncol = plat.prob['number_of_offset_columns']
                 for im in metrics:
                     if im.tag.find('aved') >= 0: continue
 
                     temp = 0.0
                     for probid in im.probCodes:
-                        if probid.find('aux') >= 0 and len(im.probCodes)>1:
+                        if probid.find('off') >= 0 and len(im.probCodes)>1:
                             coeff = ncol
-                        elif probid.find('aux') >= 0 and platStr in ['spar','tlp']:
+                        elif probid.find('off') >= 0 and platStr in ['spar','tlp']:
                             coeff = 0.0
                         else:
                             coeff = 1.0
@@ -133,10 +133,10 @@ else:
                     else:
                         data[platStr][o][im.tag][k] = temp
 
-                data[platStr][o]['baseaved'][k] = myave(data[platStr][o]['basez'][pstr],data[platStr][o]['based'][pstr])
-                data[platStr][o]['auxaved'][k] = myave(data[platStr][o]['auxz'][pstr],data[platStr][o]['auxd'][pstr])
-                data[platStr][o]['baseavet'][k] = myave(data[platStr][o]['basez'][pstr],data[platStr][o]['baset'][pstr])
-                data[platStr][o]['auxavet'][k] = myave(data[platStr][o]['auxz'][pstr],data[platStr][o]['auxt'][pstr])
+                data[platStr][o]['mainaved'][k] = myave(data[platStr][o]['mainz'][pstr],data[platStr][o]['maind'][pstr])
+                data[platStr][o]['offaved'][k] = myave(data[platStr][o]['offz'][pstr],data[platStr][o]['offd'][pstr])
+                data[platStr][o]['mainavet'][k] = myave(data[platStr][o]['mainz'][pstr],data[platStr][o]['maint'][pstr])
+                data[platStr][o]['offavet'][k] = myave(data[platStr][o]['offz'][pstr],data[platStr][o]['offt'][pstr])
                         
             os.chdir('..')
     with open(DATA_FILE,'wb') as fp:
@@ -160,7 +160,7 @@ for o in objs:
         for k, temp in enumerate(platforms):
             platStr,plat = temp
             labStr = platStr.upper()+'-'+o.upper()
-            if im.tag.find('aux') >= 0 and platStr in ['spar','tlp']: continue
+            if im.tag.find('off') >= 0 and platStr in ['spar','tlp']: continue
             y = np.array( data[platStr][o][im.tag] )
             ax1.plot(1e-6*delta_rna, im.scale*(y - y[ibase]), linestyle='-', marker=marks[k], color=mycolors[k], label=labStr)
             ax2.plot(np.array(pert)-1.0, y/y[ibase] - 1.0, linestyle='-', marker=marks[k], color=mycolors[k], label=labStr)
@@ -258,26 +258,26 @@ for o in objs:
         ax = fig.add_subplot(111)
         for ip, p in enumerate(myperts):
             pstr = str(p).replace('.','p')
-            x = np.array( data[platStr][o]['based'][pstr] )
-            y = np.array( data[platStr][o]['basez'][pstr] )
+            x = np.array( data[platStr][o]['maind'][pstr] )
+            y = np.array( data[platStr][o]['mainz'][pstr] )
             ax.plot(0.5*x, y, 'k', linestyle=lines[ip], label=labs[ip])
             ax.plot(-0.5*x, y, 'k', linestyle=lines[ip])
         ax.grid()
         ax.legend()
-        pt.save(fig, platStr+'-'+o+'_base-drawings','all')
+        pt.save(fig, platStr+'-'+o+'_main-drawings','all')
 
         if platStr == 'semi':
             fig.clf()
             ax = fig.add_subplot(111)
             for ip, p in enumerate(myperts):
                 pstr = str(p).replace('.','p')
-                x = np.array( data[platStr][o]['auxd'][pstr] )
-                y = np.array( data[platStr][o]['auxz'][pstr] )
+                x = np.array( data[platStr][o]['offd'][pstr] )
+                y = np.array( data[platStr][o]['offz'][pstr] )
                 ax.plot(0.5*x, y, 'k', linestyle=lines[ip], label=labs[ip])
                 ax.plot(-0.5*x, y, 'k', linestyle=lines[ip])
             ax.grid()
             ax.legend()
-            pt.save(fig, platStr+'-'+o+'_aux-drawings','all')
+            pt.save(fig, platStr+'-'+o+'_off-drawings','all')
 
 # Fractional mass plots
 barw = 0.8
