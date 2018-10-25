@@ -41,6 +41,40 @@ for plat in plats:
                 
             else:
                 raise Exception('Unknown platform')
+                    
+                    
+            '''
+            # SEVENTH CONVERSTION
+            with open(fname,'rb') as fp:
+                oldobj = pickle.load(fp)
+            oldparams, olddesvar, oldcons, oldobj, oldopt = oldobj
+
+            newparams = myobj.params
+            for k in oldparams.keys():
+                if k == 'tower_section_height':
+                    ns = newparams[k].size
+                    newparams[k] = oldparams[k].sum()/ns * np.ones(ns)
+                elif k == 'tower_outer_diameter':
+                    v = oldparams[k]
+                    v = np.r_[v[0], v[-1]]
+                    newparams[k] = np.r_[v[0], v.mean(), v.mean(), v[-1]]
+                elif k in ['main_outer_diameter','offset_outer_diameter']:
+                    v = oldparams[k]
+                    newparams[k] = np.r_[v[:3], v[3:5].max(), v[5]]
+                elif k.find('section_height') >= 0:
+                    v = oldparams[k]
+                    newparams[k] = np.r_[v[:2], v[2:4].sum(), v[4]]
+                elif k.find('bulkhead_thickness') >= 0:
+                    continue
+                elif k.find('stiffener_spacing') >= 0:
+                    newparams[k] = oldparams[k].min()*np.ones(newparams[k].size)
+                elif k.find('stiffener') >= 0 or k in ['main_wall_thickness','offset_wall_thickness','tower_wall_thickness']:
+                    newparams[k] = oldparams[k].max()*np.ones(newparams[k].size)
+                elif k in newparams:
+                    newparams[k] = oldparams[k]
+                    
+            with open(fname,'wb') as fp:
+                pickle.dump((newparams, olddesvar, oldcons, oldobj, oldopt), fp)
 
             # SIXTH CONVERSTION
             with open(fname,'rb') as fp:
@@ -63,9 +97,6 @@ for plat in plats:
                     
             with open(fname,'wb') as fp:
                 pickle.dump((newparams, olddesvar, oldcons, oldobj, oldopt), fp)
-                    
-                    
-            '''
 
             # FIFTH CONVERSTION
             with open(fname,'rb') as fp:
