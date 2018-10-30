@@ -36,7 +36,7 @@ def name2obj(fstr):
     myobj.constraint_report()
     try:
         print 'mass', 1e-6*myobj.prob['structural_mass']
-        print 'cost', 1e-9*myobj.prob['total_cost']
+        print 'cost', 1e-6*myobj.prob['total_cost']
         print 'R_fairlead', myobj.prob['fairlead_radius']
         print 'R_aux', myobj.params['radius_to_offset_column']
     except:

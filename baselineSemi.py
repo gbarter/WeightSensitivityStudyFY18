@@ -7,7 +7,7 @@ from shutil import copyfile, move
 def mysetup(myobj, discrete=True):
 
     myobj.add_design_variable('fairlead_location',0.0, 1.0)
-    #myobj.add_design_variable('fairlead_offset_from_shell',0.0, 5.0)
+    myobj.add_design_variable('fairlead_offset_from_shell',0.0, 5.0)
     myobj.add_design_variable('fairlead_support_wall_thickness',1e-3, 1.0)
     myobj.add_design_variable('fairlead_support_outer_diameter',1e-1, 10.0)
     myobj.add_design_variable('main_freeboard',0.0, 50.0)
@@ -60,11 +60,14 @@ def mysetup(myobj, discrete=True):
 
     for c in myobj.get_constraints():
         if c[0].find('modal') >= 0: continue
-        elif c[0].find('tip') >= 0: continue
+        #elif c[0].find('tip') >= 0: continue
         #elif c[0].find('period') >= 0: continue
         #elif c[0].find('heel_moment') >= 0: continue
         #elif c[0].find('axial_unity') >= 0: continue
-        elif ((c[0].find('tow.') >= 0) and (c[0].find('height') < 0)): continue
+        elif c[0].find('metacentric') >= 0: 
+            myobj.add_constraint(c[0], 1e-1, c[2], c[3])
+            continue
+        #elif ((c[0].find('tow.') >= 0) and (c[0].find('height') < 0)): continue
 
         myobj.add_constraint(c[0], c[1], c[2], c[3])
 
@@ -86,7 +89,7 @@ mysub.params['T'] = 9.8
 mysub.params['Uref'] = 11.0
 mysub.params['zref'] = 119.0
 mysub.params['max_offset'] = 100.0
-mysub.params['max_draft'] = 20.0
+mysub.params['max_draft'] = 30.0
 
 myturb = TurbineSemiInstance('10MW')
 myturb.set_reference('10MW')
@@ -98,44 +101,69 @@ myturb.params['wind_reference_height'] = 119.0
     
 if __name__ == '__main__':
 
-    #mysub.load(subsave)
+    mysub.load(subsave)
 
-    # SOGA
+    # SOGA (global)
     mysub.set_optimizer('soga')
-    mysub.set_options({'generations':5000,
-                       'population':30,
+    mysub.set_options({'generations':4000,
+                       'population':50,
                        'restart':False,
                        'penalty':True,
-                       'nstall':400,
+                       'penalty_multiplier':1e2,
+                       'nstall':1000,
                        'probability_of_mutation':0.4})
     mysub = mysetup(mysub)
     mysub.run()
     mysub.save(subsave)
     move('heuristic.restart','soga.restart')
 
-    # NM
-    # Coarse
-    mysub.set_optimizer('nm')
-    mysub.set_options({'restart':False,
+    # Subplex (local)
+    mysub.load(subsave)
+    mysub.set_optimizer('subplex')
+    mysub.set_options({'generations':100,
+                       'nstall':20,
                        'penalty':True,
-                       'adaptive_simplex':False,
+                       'restart':False,
                        'tol':1e-6,
                        'global_search':False,
-                       'generations':5000,
-                       'nstall':400})
+                       'adaptive_simplex':False,
+                       'penalty_multiplier':1e3})
     mysub = mysetup(mysub, False)
     mysub.run()
     mysub.save(subsave)
-    move('heuristic.restart','nm-coarse.restart')
+    move('heuristic.restart','subplex.restart')
 
-    # Fine
+    # NM (coarse)
     mysub.load(subsave)
-    mysub.set_options({'generations':20000,
-                       'nstall':1000,
-                       'adaptive_simplex':True})
+    mysub.set_optimizer('nm')
+    mysub.set_options({'generations':2000,
+                       'nstall':200,
+                       'penalty':True,
+                       'restart':False,
+                       'tol':1e-6,
+                       'global_search':False,
+                       'adaptive_simplex':False,
+                       'penalty_multiplier':1e3})
+    mysub = mysetup(mysub, False)
     mysub.run()
     mysub.save(subsave)
-    move('heuristic.restart','nm-fine.restart')
+    move('heuristic.restart','nm.restart')
+
+    # NM (fine)
+    mysub.load(subsave)
+    mysub.set_optimizer('nm')
+    mysub.set_options({'generations':5000,
+                       'nstall':1000,
+                       'penalty':True,
+                       'restart':False,
+                       'tol':1e-6,
+                       'global_search':False,
+                       'adaptive_simplex':True,
+                       'penalty_multiplier':1e3})
+    mysub = mysetup(mysub, False)
+    mysub.run()
+    mysub.save(subsave)
+    move('heuristic.restart','nm.restart')
 
     mysub.load(subsave)
     mypromote(mysub, myturb)

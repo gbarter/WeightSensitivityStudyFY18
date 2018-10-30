@@ -6,7 +6,7 @@ import sys
 from baselineSpar import mypromote
 
 
-fdefault = 'sub-nm.save'
+fdefault = 'sub-base.save'
 
 if __name__ == '__main__':
     # Determine which substructure we are using
@@ -33,19 +33,12 @@ if __name__ == '__main__':
     mysub.load(subsave)
     mysub.evaluate()
 
-    # Initialize optimization
-    mysub.set_optimizer('nm')
-    mysub.set_options({'penalty':True, 'restart':True, 'adaptive_simplex':False, 'tol':1e-6, 'global_search':False})
-    mysub.set_options({'generations':1000, 'nstall':200})
-    mysub = mysetup(mysub, False)
-
     # Initialize containers
     m_rna_orig          = 672300.5303006992
     m_nacelle_orig      = 446036.25
 
     # Determine which perturbation to run
-    #pert   = [1.1, 1.0, 0.9, 0.75, 0.667, 0.5]
-    pert   = [0.75]
+    pert   = [1.1] #1.1, 1.0, 0.9, 0.75, 0.667, 0.5
     mypert = None
     for p in pert:
         pstr = str(p).replace('.','p')
@@ -58,17 +51,25 @@ if __name__ == '__main__':
         mypert = pert
     print 'Running this perturbation set:', mypert
 
+
     for p in mypert:
+        #if p == 1.0: mysub.load(subsave)
         m = p * m_nacelle_orig
         pstr = str(p).replace('.','p')
-        fsave = fdefault if overrideName else subsave.replace('.save','_'+pstr+'.save').replace('soga','nm')
+        fsave = fdefault if overrideName else subsave.replace('.save','_'+pstr+'.save').replace('soga','subplex')
         frest = fsave.replace('save','restart')
-	if os.path.exists(fsave): mysub.load(fsave)
+        if os.path.exists(fsave): mysub.load(fsave)
         if restartFlag and os.path.exists(frest):
             copyfile(frest,'heuristic.restart')
         if not os.path.exists(fsave) or restartFlag:
-	    print 'RUNNING', str(p)
+            print 'RUNNING', str(p)
             mysub.params['rna_mass'] = m_rna_orig - (m_nacelle_orig - m)
+            # Coarse
+            #mysub.set_optimizer('subplex')
+            mysub.set_optimizer('nm')
+            mysub.set_options({'penalty':True, 'restart':False, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e10})
+            mysub.set_options({'generations':2000, 'nstall':300, 'adaptive_simplex':False}) #20
+            mysub = mysetup(mysub, False)
             mysub.run()
             mysub.save(fsave)
             move('heuristic.restart',frest)
@@ -76,3 +77,7 @@ if __name__ == '__main__':
         mypromote(mysub, myturb)
         myturb.params['nac_mass'] = m
         myturb.save('turb-'+fsave)
+        mysub.evaluate()
+        myturb.evaluate()
+
+

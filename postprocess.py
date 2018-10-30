@@ -12,7 +12,11 @@ import csv
 mycolors = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
 def myave(x, y):
-    return (np.trapz(y,x) / (x[-1] - x[0]))
+    if len(x) == len(y):
+        return (np.trapz(y,x) / (x[-1] - x[0]))
+    else:
+        dx = np.diff(x)
+        return(np.sum(y*dx)/dx.sum())
 
 class MyMetric(object):
     def __init__(self, tag, probStr, labStr, unitStr, scale, vec=False):
@@ -26,7 +30,7 @@ class MyMetric(object):
         elif type(probStr) == type(''):
             self.probCodes = [probStr]
 
-metrics = [MyMetric('mass', 'substructure_mass', 'Substructure mass', '[1000t]', 1e-6),
+metrics = [MyMetric('mass', 'structural_mass', 'Substructure mass', '[1000t]', 1e-6),
            MyMetric('volume', 'total_displacement','Substructure displacement', '[k$m^3$]', 1e-3),
            MyMetric('cost', 'total_cost', 'Substructure cost', '[M USD]', 1e-6),
            MyMetric('mball_main', 'main.ballast_mass', 'Substructure main ballast mass', '[t]', 1e-3),

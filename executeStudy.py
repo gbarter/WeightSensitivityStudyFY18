@@ -51,36 +51,40 @@ if __name__ == '__main__':
         mypert = pert
     print 'Running this perturbation set:', mypert
 
-    for p in mypert:
-	#if p == 1.0: mysub.load(subsave)
-        m = p * m_nacelle_orig
-        pstr = str(p).replace('.','p')
-        fsave = fdefault if overrideName else subsave.replace('.save','_'+pstr+'.save').replace('soga','subplex')
-        frest = fsave.replace('save','restart')
-	if os.path.exists(fsave): mysub.load(fsave)
-        if restartFlag and os.path.exists(frest):
-            copyfile(frest,'heuristic.restart')
-        if not os.path.exists(fsave) or restartFlag:
-	    print 'RUNNING', str(p)
-            mysub.params['rna_mass'] = m_rna_orig - (m_nacelle_orig - m)
-            # Coarse
-            mysub.set_optimizer('subplex')
-            mysub.set_options({'penalty':True, 'restart':False, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e3})
-            mysub.set_options({'generations':150, 'nstall':20, 'adaptive_simplex':False})
-            mysub = mysetup(mysub, False)
-            mysub.run()
-            mysub.save(fsave)
-            move('heuristic.restart',frest)
-            # Fine
-            #mysub.load(fsave)
-            #mysub.set_options({'generations':10000, 'nstall':600, 'adaptive_simplex':True})
-            #mysub.run()
-            #mysub.save(fsave)
-            #move('heuristic.restart',frest)
-        mysub.load(fsave)
-        mypromote(mysub, myturb)
-        myturb.params['nac_mass'] = m
-        myturb.save('turb-'+fsave)
-        mysub.evaluate()
-        myturb.evaluate()
+    loop = range(20)
+    for iloop in loop:
+        saveFlag = iloop >= loop[-3]
+        restartFlag = restartFlag or iloop>=loop[-2]
+        print 'RUNNING LOOP', iloop, 'of', loop[-1]
+
+        for p in mypert:
+            #if p == 1.0: mysub.load(subsave)
+            m = p * m_nacelle_orig
+            pstr = str(p).replace('.','p')
+            fsave = fdefault if overrideName else subsave.replace('.save','_'+pstr+'.save').replace('soga','subplex')
+            frest = fsave.replace('save','restart')
+            if os.path.exists(fsave): mysub.load(fsave)
+            if restartFlag and os.path.exists(frest):
+                copyfile(frest,'heuristic.restart')
+            if not os.path.exists(fsave) or restartFlag:
+                print 'RUNNING', str(p)
+                mysub.params['rna_mass'] = m_rna_orig - (m_nacelle_orig - m)
+                # Coarse
+                #mysub.set_optimizer('subplex')
+                mysub.set_optimizer('nm')
+                mysub.set_options({'penalty':True, 'restart':False, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e5})
+                mysub.set_options({'generations':2000, 'nstall':300, 'adaptive_simplex':False}) #20
+                mysub = mysetup(mysub, False)
+                mysub.run()
+                mysub.save(fsave)
+                move('heuristic.restart',frest)
+            mysub.load(fsave)
+            mypromote(mysub, myturb)
+            myturb.params['nac_mass'] = m
+            myturb.save('turb-'+fsave)
+            mysub.evaluate()
+            myturb.evaluate()
+            if not saveFlag:
+                os.remove(fsave)
+                os.remove(frest)
 
