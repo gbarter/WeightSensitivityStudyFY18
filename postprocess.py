@@ -241,8 +241,8 @@ for o in objs:
         y = np.array( data[platStr][o][im.tag] )
         ax.plot(1e-6*delta_rna[2:], (y[2:] - y[ibase])/delta_rna[2:], linestyle=lineStr, color=mycolors[k], marker=marks[k], label=platStr.upper()+'-'+o.upper())
 
-ax.set_ylim([0, 1500])
-ax.set_yticks(np.arange(0,1501,300))
+ax.set_ylim([0.0, 1.0])
+ax.set_yticks(np.arange(0,1.01,0.1))
 ax.legend()
 ax.grid()
 ax.set_xlabel(xlab[0] + ' ' + xlab[1])

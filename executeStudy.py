@@ -53,8 +53,8 @@ if __name__ == '__main__':
 
     loop = range(20)
     for iloop in loop:
-        saveFlag = iloop >= loop[-3]
-        restartFlag = restartFlag or iloop>=loop[-2]
+        saveFlag = iloop >= loop[-2]
+        restartFlag = restartFlag or iloop>=loop[-1]
         print 'RUNNING LOOP', iloop, 'of', loop[-1]
 
         for p in mypert:
