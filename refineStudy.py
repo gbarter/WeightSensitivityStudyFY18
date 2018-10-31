@@ -56,7 +56,7 @@ if __name__ == '__main__':
         #if p == 1.0: mysub.load(subsave)
         m = p * m_nacelle_orig
         pstr = str(p).replace('.','p')
-        fsave = fdefault if overrideName else subsave.replace('.save','_'+pstr+'.save').replace('soga','subplex')
+        fsave = fdefault if overrideName else subsave.replace('.save','_'+pstr+'.save').replace('v0','v2')
         frest = fsave.replace('save','restart')
         if os.path.exists(fsave): mysub.load(fsave)
         if restartFlag and os.path.exists(frest):

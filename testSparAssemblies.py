@@ -4,8 +4,8 @@ from floatingse.instance.spar_instance import SparInstance
 from baselineSpar import mysetup
 import numpy as np
 
-subsave    = 'spar-soga.save'
-turbsave   = 'turb-spar-soga.save'
+subsave    = 'spar-v0.save'
+turbsave   = 'turb-spar-v0.save'
 
 
 mysub = SparInstance()

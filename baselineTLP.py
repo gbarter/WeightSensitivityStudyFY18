@@ -51,8 +51,8 @@ def mysetup(myobj, discrete=True):
 
     return setobj(myobj)
 
-subsave    = 'tlp-soga.save'
-turbsave   = 'turb-tlp-soga.save'
+subsave    = 'tlp-v0.save'
+turbsave   = 'turb-tlp-v0.save'
 
 mysub = TLPInstance()
 mysub.set_reference('10MW')
@@ -107,17 +107,33 @@ if __name__ == '__main__':
                        'tol':1e-6,
                        'global_search':False,
                        'adaptive_simplex':False,
-                       'penalty_multiplier':1e4})
+                       'penalty_multiplier':1e3})
     mysub = mysetup(mysub, False)
     mysub.run()
     mysub.save(subsave)
     move('heuristic.restart','subplex.restart')
 
-    # NM (local)
+    # NM (coarse)
     mysub.load(subsave)
     mysub.set_optimizer('nm')
-    mysub.set_options({'generations':5000,
-                       'nstall':500,
+    mysub.set_options({'generations':2000,
+                       'nstall':200,
+                       'penalty':True,
+                       'restart':False,
+                       'tol':1e-6,
+                       'global_search':False,
+                       'adaptive_simplex':False,
+                       'penalty_multiplier':1e5})
+    mysub = mysetup(mysub, False)
+    mysub.run()
+    mysub.save(subsave)
+    move('heuristic.restart','nm.restart')
+
+    # NM (fine)
+    mysub.load(subsave)
+    mysub.set_optimizer('nm')
+    mysub.set_options({'generations':6000,
+                       'nstall':1000,
                        'penalty':True,
                        'restart':False,
                        'tol':1e-6,
@@ -128,6 +144,22 @@ if __name__ == '__main__':
     mysub.run()
     mysub.save(subsave)
     move('heuristic.restart','nm.restart')
+
+    # Subplex (again)
+    mysub.load(subsave)
+    mysub.set_optimizer('subplex')
+    mysub.set_options({'generations':100,
+                       'nstall':20,
+                       'penalty':True,
+                       'restart':False,
+                       'tol':1e-6,
+                       'global_search':False,
+                       'adaptive_simplex':False,
+                       'penalty_multiplier':1e5})
+    mysub = mysetup(mysub, False)
+    mysub.run()
+    mysub.save(subsave)
+    move('heuristic.restart','subplex.restart')
 
     mysub.load(subsave)
     mypromote(mysub, myturb)

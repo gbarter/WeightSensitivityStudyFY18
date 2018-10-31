@@ -78,8 +78,8 @@ def mysetup(myobj, discrete=True):
 
 
 
-subsave    = 'semi-soga.save'
-turbsave   = 'turb-semi-soga.save'
+subsave    = 'semi-v0.save'
+turbsave   = 'turb-semi-v0.save'
 
 mysub = SemiInstance()
 mysub.set_reference('10MW')
@@ -143,7 +143,7 @@ if __name__ == '__main__':
                        'tol':1e-6,
                        'global_search':False,
                        'adaptive_simplex':False,
-                       'penalty_multiplier':1e3})
+                       'penalty_multiplier':1e5})
     mysub = mysetup(mysub, False)
     mysub.run()
     mysub.save(subsave)
@@ -152,18 +152,34 @@ if __name__ == '__main__':
     # NM (fine)
     mysub.load(subsave)
     mysub.set_optimizer('nm')
-    mysub.set_options({'generations':5000,
+    mysub.set_options({'generations':6000,
                        'nstall':1000,
                        'penalty':True,
                        'restart':False,
                        'tol':1e-6,
                        'global_search':False,
                        'adaptive_simplex':True,
-                       'penalty_multiplier':1e3})
+                       'penalty_multiplier':1e5})
     mysub = mysetup(mysub, False)
     mysub.run()
     mysub.save(subsave)
     move('heuristic.restart','nm.restart')
+
+    # Subplex (again)
+    mysub.load(subsave)
+    mysub.set_optimizer('subplex')
+    mysub.set_options({'generations':100,
+                       'nstall':20,
+                       'penalty':True,
+                       'restart':False,
+                       'tol':1e-6,
+                       'global_search':False,
+                       'adaptive_simplex':False,
+                       'penalty_multiplier':1e5})
+    mysub = mysetup(mysub, False)
+    mysub.run()
+    mysub.save(subsave)
+    move('heuristic.restart','subplex.restart')
 
     mysub.load(subsave)
     mypromote(mysub, myturb)

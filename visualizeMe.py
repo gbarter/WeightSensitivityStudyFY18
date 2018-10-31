@@ -11,7 +11,6 @@ from wisdem.floating.turbine_spar_instance import TurbineSparInstance
 from wisdem.floating.turbine_semi_instance import TurbineSemiInstance
 
 mydtu = '10MW'
-mydict = {1:'spar-soga.save', 2:'semi-soga.save', 3:'tlp-soga.save', 4:'turb-spar-soga.save', 5:'turb-semi-soga.save'}
 
 
 def name2obj(fstr):
