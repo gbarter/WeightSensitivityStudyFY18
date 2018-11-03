@@ -6,7 +6,6 @@ import sys
 from baselineSpar import mypromote
 
 
-fdefault = 'sub-base.save'
 
 if __name__ == '__main__':
     # Determine which substructure we are using
@@ -22,13 +21,6 @@ if __name__ == '__main__':
 
     restartFlag = sys.argv[-1].lower().find('restart') >= 0
 
-    # Save name override
-    overrideName = os.path.exists(fdefault)
-    if overrideName:
-        subsave     = fdefault
-        restartFlag = True
-        plotFlag    = False
-
     # Load optimized turbine baseline
     mysub.load(subsave)
     mysub.evaluate()
@@ -38,41 +30,32 @@ if __name__ == '__main__':
     m_nacelle_orig      = 446036.25
 
     # Determine which perturbation to run
-    pert   = [1.1] #1.1, 1.0, 0.9, 0.75, 0.667, 0.5
-    mypert = None
+    pert   = [0.5] #1.1, 1.0, 0.9, 0.75, 0.667, 0.5]
+    #pert.reverse()
+    print 'Running this perturbation set:', pert
+
     for p in pert:
-        pstr = str(p).replace('.','p')
-        if mycwd.find(pstr) >= 0:
-            mypert = [p]
-            break
-    if mypert is None:
-        if overrideName:
-            raise Exception('Are you running a single perturbation? Check file and symlink setup.')
-        mypert = pert
-    print 'Running this perturbation set:', mypert
-
-
-    for p in mypert:
-        #if p == 1.0: mysub.load(subsave)
         m = p * m_nacelle_orig
         pstr = str(p).replace('.','p')
-        fsave = fdefault if overrideName else subsave.replace('.save','_'+pstr+'.save').replace('v0','v2')
+        fsave = subsave.replace('.save','_'+pstr+'.save').replace('v0','v2')
         frest = fsave.replace('save','restart')
-        if os.path.exists(fsave): mysub.load(fsave)
-        if restartFlag and os.path.exists(frest):
-            copyfile(frest,'heuristic.restart')
+        
         if not os.path.exists(fsave) or restartFlag:
             print 'RUNNING', str(p)
+            if os.path.exists(fsave): mysub.load(fsave)
+            if restartFlag and os.path.exists(frest):
+                copyfile(frest,'heuristic.restart')
             mysub.params['rna_mass'] = m_rna_orig - (m_nacelle_orig - m)
-            # Coarse
-            #mysub.set_optimizer('subplex')
-            mysub.set_optimizer('nm')
-            mysub.set_options({'penalty':True, 'restart':False, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e10})
-            mysub.set_options({'generations':2000, 'nstall':300, 'adaptive_simplex':False}) #20
+
+            mysub.set_optimizer('subplex')
+            mysub.set_options({'penalty':True, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e4})
+            mysub.set_options({'generations':50, 'nstall':8, 'restart':False, 'adaptive_simplex':False})
+
             mysub = mysetup(mysub, False)
             mysub.run()
             mysub.save(fsave)
             move('heuristic.restart',frest)
+
         mysub.load(fsave)
         mypromote(mysub, myturb)
         myturb.params['nac_mass'] = m

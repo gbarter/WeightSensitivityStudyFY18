@@ -32,12 +32,13 @@ def name2obj(fstr):
     myobj.set_reference('10MW')
     myobj.load(fstr)
     myobj.evaluate()
-    myobj.constraint_report()
+    test=myobj.constraint_report()
     try:
         print 'mass', 1e-6*myobj.prob['structural_mass']
         print 'cost', 1e-6*myobj.prob['total_cost']
         print 'R_fairlead', myobj.prob['fairlead_radius']
         print 'R_aux', myobj.params['radius_to_offset_column']
+        print test
     except:
         pass
     return myobj
