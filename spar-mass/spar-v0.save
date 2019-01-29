@@ -71,7 +71,7 @@ NNNI-1
 I-1
 I0
 tbI00
-S'\x8a\xf4\xd5\xad<\xa1\xa6?B-\x15\xbdL\xc5\xba?$`4]d}\x98?\xe4\xcft\xab:\xc3\xcc?'
+S'\x14Z$\xcb}\xc9\x8a?P"\xe5\xd4\xca\xdd\x98?\xba\x03U\x8e\xaf\xa7\x98?+\x16\xaeG\xe1z\x84?'
 tbsS'zref'
 p18
 F119
@@ -92,7 +92,7 @@ tRp22
 (I4
 tg17
 I00
-S"\xecv\xb7U\xf3'\xa8?R\x15\xbfa\xb2\x80\xcb?\x167\x85\xc6\x01$\x93?Z\xc6\x8e$\xe4\x97\x84?"
+S"\xdeq\xb7\xfa\x8ay\xce?\x9excc'\x86\xa6?\xae\xbf\xc2\xda1\xbc\xa1?{\x14\xaeG\xe1z\x84?"
 tbsS'max_taper_ratio'
 p23
 F0.40000000000000002
@@ -107,7 +107,7 @@ tRp25
 (I4
 tg17
 I00
-S'.\xf1\n\xbc\x9e\x0b\xe9?\xd8\xa0\x1ft~\x8d\x00@\xf4\xdc\x86}\x9fd\x0b@\x05\xdbfp\xf0\x977@'
+S'\x96\x15g\x1c\xcd\n\xf1?\xab\xb8\x97\x0f\\\xc1\xf1?HrM\xc8\xb4\xd4\x11@\xfe\x10\xb5\xbaA7\x11@'
 tbsS'max_draft'
 p26
 F200
@@ -139,7 +139,7 @@ tRp33
 (I5
 tg17
 I00
-S'\x164\xc47\xdaC\x04@\x9a\xf1\x1f\xeb\x15h(@r\xc3\xb3Nu\xc0*@C\x19\xcdT\xf6\x03 @\xb8O\xb2LNK+@'
+S's\x16\xd6\x1aC;3@\xca\xa1&8>{\n@@%G\xa4\t>0@}\xf8K\x06\x13\xe8\x17@\x15\xe8\\\xdb\xb5])@'
 tbsS'rna_I'
 p34
 g3
@@ -194,7 +194,7 @@ sS'main_freeboard'
 p47
 g38
 (g17
-S'`\xf8\xddJ\x98\x19,@'
+S"\xa04ghJ\x8a'@"
 tRp48
 sS'Rhub'
 p49
@@ -216,7 +216,7 @@ tRp53
 (I4
 tg17
 I00
-S'\xdaJ\xbd\xe1/\xa3*@\x9b\x86d\xbb\x90s$@\x85\xec\xda\xb8\xf4S\x1a@:@\xdd\xa7_8\x12@'
+S'\xf2\xec\x0b\x91\t\xe9(@LZM\x1e\xe9&\x1f@\x8a:S\x01\xc2\xbb\x19@>\xa0|\xfe\x16\x81\x14@'
 tbsS'anchor_type'
 p54
 S'suctionpile'
@@ -227,7 +227,7 @@ sS'fairlead_location'
 p56
 g38
 (g17
-S'}\xd9^-\xeeh\xd2?'
+S'w"tp\xa7y\xe4?'
 tRp57
 sS'max_offset'
 p58
@@ -270,12 +270,12 @@ tRp69
 (I3
 tg17
 I00
-S'\xba\xc9eg*$\xc0?Nv\x919[\x8eP@<\xc7,Q\x15&Q@'
+S'\xe8\x8b\xcaRH\x9bL@\xb9\xbc\xc6\xe1&\x88A@q\xe5[\xa4IzF@'
 tbsS'main_buoyancy_tank_location'
 p70
 g38
 (g17
-S'\x94\xf0\xb7m\xd6\x06\xe9?'
+S'\xb0\xc0\x91\x9f\xbf\xa9\xea?'
 tRp71
 sS'cm'
 p72
@@ -291,7 +291,7 @@ tRp74
 (I4
 tg17
 I00
-S'\\\xde\xe1\xe5\x83P\xb9?\x82Ic\xc0\xc3\xa9\x9f?H:\x1bs(\xdd\xd3?\\\x04\x8c\xe5\xc3\x97\xc5?'
+S'\xb6&\xc4\xbb\x00\xbb\x95?\x90\xfc\x02\x98h_\xb5?ED\xe8\xe9.\xa3\xd6?\xfc\xa9\xf1\xd2MbP?'
 tbsS'hub_cm'
 p75
 g3
@@ -317,7 +317,7 @@ tbsS'mooring_diameter'
 p78
 g38
 (g17
-S'~4\x9fy0\xec\xd5?'
+S'{\x14\xaeG\xe1z\x94?'
 tRp79
 sS'gamma_m'
 p80
@@ -398,7 +398,7 @@ tbsS'mooring_line_length'
 p97
 g38
 (g17
-S'u\xd4v\x1e8J\x8e@'
+S'\x94b\x07\x9cm\xc4z@'
 tRp98
 sS'downwind'
 p99
@@ -413,7 +413,7 @@ sS'main_buoyancy_tank_diameter'
 p102
 g38
 (g17
-S'\x86\x90\xfdo\xde\x99\x00@'
+S'\x00\x00\x00\x00\x00\x00\x00\x00'
 tRp103
 sS'column_mass_factor'
 p104
@@ -447,7 +447,7 @@ tRp110
 (I4
 tg17
 I00
-S'z<kY\x81=\xa2?H40\xc8\xa1A\xac?,\xb9\xd6`\xf8\x0f\xa3?\xb6$\x92\x1c9\x17\xa3?'
+S'\xf1\xda\xa4\x1d\xe2\xdb\xa4?\xa3\xfdZ\xfe\x80\x8f\x96?\x9f!\x86o\x08\x80\xa7?*k \x1d\xc0\xbc\xa9?'
 tbsS'connection_ratio_max'
 p111
 F0.25
@@ -468,7 +468,7 @@ tRp115
 (I4
 tg17
 I00
-S'`\xdf\xaez\x9e\xc5`?\x1b\xc7\xc0Hy\xcfr?\x00\xaa\xf1\xd2MbP?\xb2\xdd\xde\xfb\xff\xff\xdf?'
+S'}q\x1a\xf0I\x8d\x88?=C*gB\x86P?\xfc\xa9\xf1\xd2MbP?\xfc\xa9\xf1\xd2MbP?'
 tbsS'lower_attachment_pontoons_int'
 p116
 I0
@@ -479,7 +479,7 @@ sS'main_buoyancy_tank_height'
 p118
 g38
 (g17
-S'\xd9$fYE\xbb\xe9?'
+S'\xf021KZ!\x9c>'
 tRp119
 sS'cd_usr'
 p120
@@ -513,7 +513,7 @@ tRp126
 (I4
 tg17
 I00
-S'\xe76\xf4\xd7\xe0CH@\x83\xb1\x1a\xe5\xc1\xa0H@)\x07{\x8e\xeeNC@s\xa82\xd1\x94s\x15@'
+S"@\xe4\xe1\x94\xfdD'@:\xe5\x94\x05'bB@\xfa\x968e\x83\xd4\x1d@s%\x94bo\xdf$@"
 tbsS'Uref'
 p127
 F11
@@ -521,7 +521,7 @@ sS'anchor_radius'
 p128
 g38
 (g17
-S'&\xb1\xa4\xcfZ\xa5\x88@'
+S'02\n\x8d>gi@'
 tRp129
 sS'rna_cg'
 p130
@@ -542,7 +542,7 @@ sS'fairlead_support_wall_thickness'
 p133
 g38
 (g17
-S'\x00\xaa\xf1\xd2MbP?'
+S'\xfc\xa9\xf1\xd2MbP?'
 tRp134
 sS'fairlead_offset_from_shell'
 p135
@@ -558,7 +558,7 @@ tRp137
 (I3
 tg17
 I00
-S')<\\\x0c\nG\x9e?\xaa\xf8!\xeb0\xf0\x9c?B\xd5\xb2p\xdb\xc2\x99?'
+S'\x16\xd6\t\x98\xc4b\x9a?r(\xe1\xb9L\xba\x9a?\xb8&B\xfe\x19\xf4\x94?'
 tbsS'mooring_cost_rate'
 p138
 F1.1000000000000001
@@ -607,7 +607,7 @@ sS'main_permanent_ballast_height'
 p150
 g38
 (g17
-S':\xd8[5\xe3\x18\xd2?'
+S' y\xf2\xd9\x9e[\x06@'
 tRp151
 sS'offset_stiffener_flange_width'
 p152
@@ -721,8 +721,8 @@ aF100
 aF5000
 aa(lp179
 g78
-aF0.050000000000000003
-aF2
+aF0.02
+aF0.16
 aa(lp180
 g150
 aF0.10000000000000001
@@ -883,10 +883,10 @@ aNaa(lp251
 S'period_margin_high'
 p252
 aF1
-aNaNaa(S'structural_mass'
+aNaNaa(S'total_mass'
 p253
 F9.9999999999999995e-07
 tp254
-S'NM'
+S'SUBPLEX'
 p255
 t.

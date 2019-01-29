@@ -40,7 +40,7 @@ ones shown.
 \begin{figure}[htb]
   \begin{center}
     \includegraphics[width=5in]{diagram}
-    \caption{Geometry parameterization with common wind turbine and
+    \caption{\textit{FloatingSE} geometry parameterization with common wind turbine and
       naval architecture conventions.}
     \label{fig:diagram}
   \end{center}
@@ -108,10 +108,24 @@ Buoyancy tanks are modeled as a collar around the column and are not
 subject the same taper or connectivity constraints as the frustum
 sections.  They therefore offer added buoyancy without incurring as much
 structural mass or cost.  Moreover, they can also serve to augment the
-heave added mass like a plate.  In addition to their diameter and
-height, the user can adjust the location of the buoyancy tank from the
-column base to the top. Buoyancy tanks can be added to either the main
-and/or offset columns.
+heave added mass like heave plates, as shown in Figure
+\ref{fig:pontoon}.  In truth, the entire offset column in a
+semisubmersible can be considered a \textit{buoyancy tank}, however
+within this geometry discretization it refers to a collar around a
+central frustum, joining at any angle, and is not subject to frustum
+tapering limit.  In addition to their diameter and height, the user can
+adjust the location of the buoyancy tank from the column base to the
+top. Buoyancy tanks can be added to either the main and/or offset
+columns.
+
+\begin{figure}[htb]
+  \begin{center}
+    \includegraphics[width=4.5in]{semi}
+    \caption{Parameterization of truss elements in substructure.}
+    \label{fig:pontoon}
+  \end{center}
+\end{figure}
+
 
 \section{Pontoons and Support Structure}
 Many substructure designs include the use of pontoons that form a truss
@@ -125,15 +139,6 @@ the upper and lower rings connecting the offset columns ($B$ and $D$,
 respectively), the upper and lower main-to-offset connections ($A$ and
 $C$, respectively), the lower-base to upper-offset cross members ($E$),
 and the V-shaped cross members between offset columns ($F$).
-
-\begin{figure}[htb]
-  \begin{center}
-    \includegraphics[width=4.5in]{semi}
-    \caption{Parameterization of truss elements in substructure.}
-    \label{fig:pontoon}
-  \end{center}
-\end{figure}
-
 
 \section{Mooring Lines}
 The mooring system is described by the number of lines, their geometry,
@@ -150,7 +155,9 @@ by the user.
 
 By default, the mooring system is assumed to use a steel chain with drag
 embedment anchors. Other mooring available for selection are nylon,
-polyester, steel wire rope (IWRC) and fiber-core wire rope.  The only
+polyester, steel wire rope (IWRC) and fiber-core wire rope.  However,
+the mooring analysis only supports use of one material at a time, so
+hybrid lines that utilize multiple materials are not supported.  The only
 alternative anchor type is currently suction pile anchors, but there are
 plans to include gravity anchors as well.  The standard configuration
 for TLPs is the use of taut nylon mooring lines with suction-pile
@@ -193,3 +200,6 @@ cost rates and estimates should be considered notional.
     }
   \end{center}
 \end{table}
+
+
+\section{Cost Model}

@@ -81,7 +81,6 @@ myturb.params['number_of_offset_columns'] = 0
 if __name__ == '__main__':
 
     mysub.load(subsave)
-    mysub.params['max_draft'] = 35.0
 
     # SOGA (global)
     mysub.set_optimizer('soga')

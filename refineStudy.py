@@ -30,7 +30,7 @@ if __name__ == '__main__':
     m_nacelle_orig      = 446036.25
 
     # Determine which perturbation to run
-    pert   = [0.5] #1.1, 1.0, 0.9, 0.75, 0.667, 0.5]
+    pert   = [1.1, 1.0, 0.9, 0.75, 0.667, 0.5]
     #pert.reverse()
     print 'Running this perturbation set:', pert
 
@@ -38,23 +38,39 @@ if __name__ == '__main__':
         m = p * m_nacelle_orig
         pstr = str(p).replace('.','p')
         fsave = subsave.replace('.save','_'+pstr+'.save').replace('v0','v2')
-        frest = fsave.replace('save','restart')
         
         if not os.path.exists(fsave) or restartFlag:
-            print 'RUNNING', str(p)
-            if os.path.exists(fsave): mysub.load(fsave)
-            if restartFlag and os.path.exists(frest):
-                copyfile(frest,'heuristic.restart')
-            mysub.params['rna_mass'] = m_rna_orig - (m_nacelle_orig - m)
+            repeatCounter = 0
+            while True: #and repeatCounter < 7:
+                print 'RUNNING', str(p)
+                if os.path.exists(fsave): mysub.load(fsave)
+                mysub.params['rna_mass'] = m_rna_orig - (m_nacelle_orig - m)
 
-            mysub.set_optimizer('subplex')
-            mysub.set_options({'penalty':True, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e4})
-            mysub.set_options({'generations':50, 'nstall':8, 'restart':False, 'adaptive_simplex':False})
+                junkme = True
+                if repeatCounter%3 == 0 and repeatCounter > 0:
+                    mysub.set_optimizer('subplex')
+                    mysub.set_options({'penalty':True, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e4})
+                    mysub.set_options({'generations':40, 'nstall':8, 'restart':False, 'adaptive_simplex':False})
+                elif repeatCounter in [None]:
+                    mysub.set_optimizer('nm')
+                    mysub.set_options({'penalty':True, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e4})
+                    mysub.set_options({'generations':2000, 'nstall':200, 'restart':False, 'adaptive_simplex':False})
+                else:
+                    mysub.set_optimizer('nm')
+                    mysub.set_options({'penalty':True, 'tol':1e-6, 'global_search':False, 'penalty_multiplier':1e4})
+                    mysub.set_options({'generations':6000, 'nstall':800, 'restart':True, 'adaptive_simplex':True})
+                    junkme = False
 
-            mysub = mysetup(mysub, False)
-            mysub.run()
-            mysub.save(fsave)
-            move('heuristic.restart',frest)
+                mysub = mysetup(mysub, False)
+                mysub.run()
+                mysub.save(fsave)
+                if junkme:
+                    move('heuristic.restart','junk.restart')
+	    
+                passFlag = mysub.constraint_report(printFlag=False)
+                print 'Counter:', repeatCounter, '  Passing:', passFlag
+                #if passFlag: break
+                repeatCounter += 1
 
         mysub.load(fsave)
         mypromote(mysub, myturb)

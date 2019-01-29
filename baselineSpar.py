@@ -22,7 +22,7 @@ def setobj(myobj):
     if mycwd.lower().find('cost') >= 0:
         myobj.add_objective(prefix+'total_cost', 1e-6)
     else:
-        myobj.add_objective(prefix+'structural_mass', 1e-6)
+        myobj.add_objective(prefix+'total_mass', 1e-6)
     return myobj
 
 
@@ -44,7 +44,7 @@ def mysetup(myobj, discrete=True):
     myobj.add_design_variable('tower_wall_thickness',1e-3, 5e-1)
     myobj.add_design_variable('mooring_line_length', 2e2, 3e3)
     myobj.add_design_variable('anchor_radius', 1e2, 5e3)
-    myobj.add_design_variable('mooring_diameter', 0.05, 2.0)
+    myobj.add_design_variable('mooring_diameter', 0.02, 0.16)
     myobj.add_design_variable('main_permanent_ballast_height', 1e-1, 50.0)
     myobj.add_design_variable('main_stiffener_web_height', 1e-2, 1.0)
     myobj.add_design_variable('main_stiffener_web_thickness', 1e-3, 5e-1)
@@ -94,7 +94,6 @@ myturb.params['wind_reference_height'] = 119.0
 if __name__ == '__main__':
 
     mysub.load(subsave)
-    mysub.params['max_draft'] = 200.0
 
     # SOGA (global)
     mysub.set_optimizer('soga')

@@ -6,7 +6,7 @@ import plotTools as pt
 from baselineSpar import mysub as myspar
 from baselineSemi import mysub as mysemi
 from baselineTLP import mysub as mytlp
-import cPickle as pickle        
+import pickle        
 import csv
 
 mycolors = plt.rcParams['axes.prop_cycle'].by_key()['color']
@@ -30,7 +30,7 @@ class MyMetric(object):
         elif type(probStr) == type(''):
             self.probCodes = [probStr]
 
-metrics = [MyMetric('mass', 'structural_mass', 'Substructure mass', '[1000t]', 1e-6),
+metrics = [MyMetric('mass', 'total_mass', 'Substructure mass', '[1000t]', 1e-6),
            MyMetric('volume', 'total_displacement','Substructure displacement', '[k$m^3$]', 1e-3),
            MyMetric('cost', 'total_cost', 'Substructure cost', '[M USD]', 1e-6),
            MyMetric('mball_main', 'main.ballast_mass', 'Substructure main ballast mass', '[t]', 1e-3),
@@ -84,7 +84,7 @@ delta_rna = m_nacelle_orig * (np.array(pert) - 1.0)
 DATA_FILE = 'alldata.pkl'
 if os.path.exists(DATA_FILE):
     with open(DATA_FILE,'rb') as fp:
-        data = pickle.load(fp)
+        data = pickle.load(fp, encoding='latin1')
 else:
     data = {}
     for platStr,plat in platforms:
@@ -186,11 +186,11 @@ for o in objs:
 
 
 # Ballast changes on one plot
-fig1.clf()
-fig2.clf()
-ax1 = fig1.add_subplot(111)
-ax2 = fig2.add_subplot(111)
 for o in objs:
+    fig1.clf()
+    fig2.clf()
+    ax1 = fig1.add_subplot(111)
+    ax2 = fig2.add_subplot(111)
     im = metrics[ metnames.index('mball') ]
 
     for k, temp in enumerate(platforms):
@@ -231,7 +231,6 @@ for o in objs:
 # Set cost premium
 im = metrics[2]
 fig,ax = pt.initFigAxis()
-ax = fig.add_subplot(111)
 for o in objs:
     #fig.clf()
     #ax = fig.add_subplot(111)
@@ -241,7 +240,7 @@ for o in objs:
         y = np.array( data[platStr][o][im.tag] )
         ax.plot(1e-6*delta_rna[2:], (y[2:] - y[ibase])/delta_rna[2:], linestyle=lineStr, color=mycolors[k], marker=marks[k], label=platStr.upper()+'-'+o.upper())
 
-ax.set_ylim([-2.0, 2.0])
+#ax.set_ylim([-0.5, 1.5])
 #ax.set_yticks(np.arange(0,1.01,0.1))
 ax.legend()
 ax.grid()

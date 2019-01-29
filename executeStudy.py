@@ -42,7 +42,7 @@ if __name__ == '__main__':
         
         if not os.path.exists(fsave) or restartFlag:
             repeatCounter = 0
-            while True and repeatCounter < 11:
+            while True and repeatCounter < 6:
                 print 'RUNNING', str(p)
                 if os.path.exists(fsave): mysub.load(fsave)
                 if restartFlag and os.path.exists(frest):
@@ -65,7 +65,10 @@ if __name__ == '__main__':
                 mysub = mysetup(mysub, False)
                 mysub.run()
                 mysub.save(fsave)
-                copyfile('heuristic.restart',frest)
+                if repeatCounter < 3:
+                    move('heuristic.restart','junk.restart')
+                else:
+                    move('heuristic.restart',frest)
 	    
                 passFlag = mysub.constraint_report(printFlag=False)
                 print 'Counter:', repeatCounter, '  Passing:', passFlag

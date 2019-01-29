@@ -1,4 +1,4 @@
-#from __future__ import print_function
+from __future__ import print_function
 #from builtins import *
 import sys
 
@@ -14,7 +14,7 @@ mydtu = '10MW'
 
 
 def name2obj(fstr):
-    if not type(fstr) == type('') or type(fstr) == type(u''):
+    if not (type(fstr) is type('') or type(fstr) == type(u'')):
         raise ValueError(str(fstr)+' is not a valid string')
     mystr = fstr.lower()
     
@@ -32,13 +32,12 @@ def name2obj(fstr):
     myobj.set_reference('10MW')
     myobj.load(fstr)
     myobj.evaluate()
-    test=myobj.constraint_report()
     try:
-        print 'mass', 1e-6*myobj.prob['structural_mass']
-        print 'cost', 1e-6*myobj.prob['total_cost']
-        print 'R_fairlead', myobj.prob['fairlead_radius']
-        print 'R_aux', myobj.params['radius_to_offset_column']
-        print test
+        print('mass', 1e-6*myobj.prob['total_mass'])
+        print('cost', 1e-6*myobj.prob['total_cost'])
+        print('R_fairlead', myobj.prob['fairlead_radius'])
+        print('R_aux', myobj.params['radius_to_offset_column'])
+        print(myobj.constraint_report())
     except:
         pass
     return myobj
